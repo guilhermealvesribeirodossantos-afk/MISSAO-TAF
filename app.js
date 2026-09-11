@@ -293,7 +293,12 @@ const state = {
   timerRemaining: 0,
   timerInitial: 0,
   timerRunning: false,
-  timerMode: "exercise"
+  timerMode: "exercise",
+  timerOnComplete: null,
+  coachSeriesCurrent: 1,
+  coachSeriesTotal: 1,
+  coachSeriesFinished: false,
+  coachWaitingRest: false
 };
 
 function normalizeDate(date) {
@@ -432,17 +437,22 @@ function formatClock(seconds) {
   return `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 }
 
-function stopTimer() {
+function stopTimer(clearCallback = false) {
   if (state.timerId) clearInterval(state.timerId);
   state.timerId = null;
   state.timerRunning = false;
+
+  if (clearCallback) {
+    state.timerOnComplete = null;
+  }
 }
 
-function setTimer(seconds, mode = "exercise") {
-  stopTimer();
+function setTimer(seconds, mode = "exercise", onComplete = null) {
+  stopTimer(true);
   state.timerMode = mode;
   state.timerInitial = seconds;
   state.timerRemaining = seconds;
+  state.timerOnComplete = onComplete;
   updateTimerUI();
 }
 
@@ -477,10 +487,15 @@ function toggleTimer() {
     updateTimerUI();
 
     if (state.timerRemaining <= 0) {
-      stopTimer();
+      const callback = state.timerOnComplete;
+      stopTimer(true);
       updateTimerUI();
 
       if (navigator.vibrate) navigator.vibrate([180, 100, 180]);
+
+      if (typeof callback === "function") {
+        callback();
+      }
     }
   }, 1000);
 }
@@ -558,12 +573,126 @@ function saveCurrentResult() {
   return true;
 }
 
+
+function getCoachSeriesTotal(exercise) {
+  const text = `${exercise.prescription || ""}`.toLowerCase();
+
+  if (exercise.name.toLowerCase().includes("corrida")) return 1;
+  if (exercise.name.toLowerCase().includes("mobilidade")) return 1;
+  if (exercise.name.toLowerCase().includes("corda")) return 1;
+
+  const match = text.match(/(\d+)\s*(séries|serie|série|series|blocos|bloco)/i);
+  if (match) return Math.max(1, Number(match[1]));
+
+  return 1;
+}
+
+function resetCoachSeries(exercise) {
+  state.coachSeriesCurrent = 1;
+  state.coachSeriesTotal = getCoachSeriesTotal(exercise);
+  state.coachSeriesFinished = false;
+  state.coachWaitingRest = false;
+}
+
+function renderCoachSeries(exercise) {
+  const box = document.getElementById("coachSeriesBox");
+  const title = document.getElementById("coachSeriesTitle");
+  const counter = document.getElementById("coachSeriesCounter");
+  const instruction = document.getElementById("coachSeriesInstruction");
+  const status = document.getElementById("coachSeriesStatus");
+  const button = document.getElementById("coachSeriesDoneBtn");
+
+  if (!box || !title || !counter || !instruction || !status || !button) return;
+
+  box.classList.remove("hidden");
+
+  const total = state.coachSeriesTotal;
+  const current = Math.min(state.coachSeriesCurrent, total);
+
+  title.textContent = total > 1 ? `SÉRIE ${current}` : "ETAPA ATUAL";
+  counter.textContent = `${current}/${total}`;
+
+  if (state.coachWaitingRest) {
+    instruction.textContent = "DESCANSE AGORA. O TREINADOR LIBERA A PRÓXIMA SÉRIE QUANDO O TEMPO TERMINAR.";
+    status.textContent = "Não inicie a próxima série antes do descanso terminar.";
+    button.textContent = "DESCANSANDO...";
+    button.disabled = true;
+    return;
+  }
+
+  if (state.coachSeriesFinished) {
+    instruction.textContent = "ETAPA CONCLUÍDA. REGISTRE SEU RESULTADO ABAIXO E DEPOIS TOQUE EM CONCLUIR E AVANÇAR.";
+    status.textContent = "Todas as séries desta etapa foram concluídas.";
+    button.textContent = "✓ ETAPA CONCLUÍDA";
+    button.disabled = true;
+    return;
+  }
+
+  if (total > 1) {
+    instruction.textContent = `Faça agora a série ${current} de ${total}, seguindo a execução e a técnica indicadas nesta tela.`;
+    status.textContent = current < total
+      ? "Ao terminar, confirme a série. O descanso será iniciado automaticamente."
+      : "Esta é a última série. Ao terminar, confirme para liberar o registro do resultado.";
+    button.textContent = `✓ CONCLUÍ A SÉRIE ${current}`;
+  } else {
+    instruction.textContent = "Execute agora esta etapa completa seguindo o tempo, volume e orientação indicados.";
+    status.textContent = "Quando terminar, confirme a etapa para liberar o avanço.";
+    button.textContent = "✓ CONCLUÍ ESTA ETAPA";
+  }
+
+  button.disabled = false;
+}
+
+function finishCoachRest() {
+  state.coachWaitingRest = false;
+  state.coachSeriesCurrent += 1;
+
+  const exercise = WORKOUTS[state.workoutKey].exercises[state.exerciseIndex];
+  renderCoachSeries(exercise);
+
+  const box = document.getElementById("coachSeriesBox");
+  if (box) {
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
+function completeCoachSeries() {
+  if (state.coachSeriesFinished || state.coachWaitingRest) return;
+
+  const exercise = WORKOUTS[state.workoutKey].exercises[state.exerciseIndex];
+
+  if (state.coachSeriesCurrent >= state.coachSeriesTotal) {
+    state.coachSeriesFinished = true;
+    renderCoachSeries(exercise);
+    return;
+  }
+
+  const restSeconds = exercise.restSeconds || 45;
+  state.coachWaitingRest = true;
+  renderCoachSeries(exercise);
+
+  const timerBox = document.getElementById("liveTimerBox");
+  if (timerBox) timerBox.classList.remove("hidden");
+
+  setTimer(restSeconds, "rest", finishCoachRest);
+  toggleTimer();
+
+  const timerBoxAfter = document.getElementById("liveTimerBox");
+  if (timerBoxAfter) {
+    timerBoxAfter.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
 function openTrainingScreen() {
   const workout = WORKOUTS[state.workoutKey];
 
   state.exerciseIndex = 0;
   state.completedExercises = new Set();
   state.results = {};
+  state.coachSeriesCurrent = 1;
+  state.coachSeriesTotal = 1;
+  state.coachSeriesFinished = false;
+  state.coachWaitingRest = false;
 
   document.getElementById("trainingSessionTitle").textContent = workout.title;
   document.getElementById("trainingSessionDuration").textContent = workout.duration;
@@ -588,6 +717,8 @@ function renderExercise() {
   const workout = WORKOUTS[state.workoutKey];
   const exercise = workout.exercises[state.exerciseIndex];
   const total = workout.exercises.length;
+
+  resetCoachSeries(exercise);
 
   document.getElementById("trainingStepCounter").textContent = `${state.exerciseIndex + 1}/${total}`;
   document.getElementById("exerciseStepLabel").textContent = `EXERCÍCIO ${state.exerciseIndex + 1} DE ${total}`;
@@ -640,6 +771,7 @@ function renderExercise() {
   document.getElementById("completeExerciseBtn").textContent =
     state.exerciseIndex === total - 1 ? "FINALIZAR TREINO" : "CONCLUIR E AVANÇAR";
 
+  renderCoachSeries(exercise);
   renderTimer(exercise);
   renderResultInput(exercise);
 
@@ -647,6 +779,23 @@ function renderExercise() {
 }
 
 function completeCurrentExercise() {
+  const exercise = WORKOUTS[state.workoutKey].exercises[state.exerciseIndex];
+
+  if (!state.coachSeriesFinished) {
+    const box = document.getElementById("coachSeriesBox");
+    if (box) {
+      box.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    const status = document.getElementById("coachSeriesStatus");
+    if (status) {
+      status.textContent = state.coachWaitingRest
+        ? "Aguarde o descanso terminar antes de continuar."
+        : "Conclua a etapa orientada pelo treinador antes de avançar.";
+    }
+    return;
+  }
+
   if (!saveCurrentResult()) return;
 
   const workout = WORKOUTS[state.workoutKey];
@@ -662,6 +811,7 @@ function completeCurrentExercise() {
 
 function previousExercise() {
   if (state.exerciseIndex <= 0) return;
+  stopTimer(true);
   saveCurrentResult();
   state.exerciseIndex -= 1;
   renderExercise();
@@ -710,6 +860,7 @@ function bindEvents() {
   document.getElementById("timerStartPauseBtn")?.addEventListener("click", toggleTimer);
   document.getElementById("timerResetBtn")?.addEventListener("click", resetTimer);
   document.getElementById("startRestBtn")?.addEventListener("click", startRestTimer);
+  document.getElementById("coachSeriesDoneBtn")?.addEventListener("click", completeCoachSeries);
 }
 
 function init() {
