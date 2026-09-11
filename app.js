@@ -40,7 +40,7 @@ const WORKOUTS = {
         rest: "60–90 s",
         restSeconds: 75,
         resultType: "number",
-        resultLabel: "Melhor sustentação/negativa (segundos)",
+        resultLabel: "Melhor tempo controlado na progressão (segundos)",
         resultPlaceholder: "Ex.: 8",
         instructions: [
           "Comece com retrações escapulares controladas.",
@@ -120,7 +120,7 @@ const WORKOUTS = {
         rest: "60–90 s",
         restSeconds: 75,
         resultType: "number",
-        resultLabel: "Melhor sustentação/negativa (segundos)",
+        resultLabel: "Melhor tempo controlado na progressão (segundos)",
         resultPlaceholder: "Ex.: 10",
         instructions: [
           "Faça retrações escapulares.",
@@ -236,7 +236,7 @@ const WORKOUTS = {
         rest: "60–90 s",
         restSeconds: 75,
         resultType: "number",
-        resultLabel: "Melhor sustentação/negativa (segundos)",
+        resultLabel: "Melhor tempo controlado na progressão (segundos)",
         resultPlaceholder: "Ex.: 8",
         instructions: [
           "Retrações escapulares.",
@@ -629,7 +629,21 @@ function renderCoachSeries(exercise) {
   }
 
   if (total > 1) {
-    instruction.textContent = `Faça agora a série ${current} de ${total}, seguindo a execução e a técnica indicadas nesta tela.`;
+    const isBarExercise = exercise.name.toLowerCase().includes("barra");
+
+    if (isBarExercise) {
+      const barOrders = [
+        "Faça retrações escapulares controladas. Pense em baixar os ombros sem dobrar os cotovelos.",
+        "Faça uma sustentação assistida ou isometria em posição segura. Segure somente enquanto mantiver controle.",
+        "Faça negativas controladas somente se conseguir começar no alto com apoio seguro. Desça devagar.",
+        "Repita a melhor progressão que conseguiu executar com técnica, sem tentar compensar no balanço."
+      ];
+
+      instruction.textContent = `Série ${current}: ${barOrders[Math.min(current - 1, barOrders.length - 1)]}`;
+    } else {
+      instruction.textContent = `Faça agora a série ${current} de ${total}, seguindo a execução e a técnica indicadas nesta tela.`;
+    }
+
     status.textContent = current < total
       ? "Ao terminar, confirme a série. O descanso será iniciado automaticamente."
       : "Esta é a última série. Ao terminar, confirme para liberar o registro do resultado.";
@@ -736,8 +750,8 @@ function renderExercise() {
       coachAction.textContent = "AGORA: FAÇA A CORRIDA";
       coachDetail.textContent = `Siga o ritmo indicado por ${exercise.prescription}. Não tente bater recorde hoje; cumpra a sessão e registre a distância ao terminar.`;
     } else if (exercise.name.toLowerCase().includes("barra")) {
-      coachAction.textContent = "AGORA: TREINE A PROGRESSÃO";
-      coachDetail.textContent = "Faça uma série por vez com controle. Use o botão DESCANSO entre as séries. Como seu nível inicial é 0 barras, não tente compensar com movimentos descontrolados.";
+      coachAction.textContent = "NÍVEL 0: CONSTRUIR A PRIMEIRA BARRA";
+      coachDetail.textContent = "Você ainda está em 0 barras completas. Hoje o objetivo NÃO é acumular barras completas: faça a progressão indicada, uma série por vez, com controle e descanso.";
     } else if (exercise.name.toLowerCase().includes("remador") || exercise.name.toLowerCase().includes("core")) {
       coachAction.textContent = "AGORA: PRIORIZE A TÉCNICA";
       coachDetail.textContent = "Faça as repetições devagar e coordenadas. Nesta fase, uma repetição correta vale mais do que várias rápidas e mal executadas.";
