@@ -1347,6 +1347,257 @@ function save2400Test() {
   renderRunningScreen();
 }
 
+
+function getBarRepsHistory() {
+  try {
+    return JSON.parse(localStorage.getItem("missaoTAF.barReps") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveBarRepsHistory(history) {
+  localStorage.setItem("missaoTAF.barReps", JSON.stringify(history));
+}
+
+function getBarSessions() {
+  const history = getStoredHistory();
+
+  return history.filter(entry =>
+    Array.isArray(entry.results) &&
+    entry.results.some(result =>
+      String(result.exercise || "").toLowerCase().includes("barra")
+    )
+  );
+}
+
+function getBestFullBarReps() {
+  const history = getBarRepsHistory();
+  if (!history.length) return 0;
+
+  return Math.max(
+    0,
+    ...history.map(item => Number(item.reps) || 0)
+  );
+}
+
+function getBarProgressPhase(bestTime, fullReps) {
+  if (fullReps >= 2) {
+    return {
+      level: 4,
+      phase: "2+ REPS",
+      title: "CONSTRUIR CONSISTÊNCIA",
+      text: `Sua melhor marca é ${fullReps} barras completas. Agora o objetivo é consolidar repetições limpas e criar margem para o TAF.`,
+      coachTitle: "Consolidar as repetições",
+      coachText: "Continue treinando força e técnica. Não transforme toda sessão em teste máximo; o objetivo é conseguir repetir boas barras com consistência."
+    };
+  }
+
+  if (fullReps >= 1) {
+    return {
+      level: 4,
+      phase: "1ª BARRA",
+      title: "PRIMEIRA BARRA CONQUISTADA",
+      text: "Você já registrou sua primeira barra completa. A missão agora é transformar 1 repetição em 2 ou mais repetições limpas.",
+      coachTitle: "Da primeira para a segunda barra",
+      coachText: "Mantenha progressões, negativas e trabalho técnico. Faça tentativas completas apenas em sessões apropriadas e descansado."
+    };
+  }
+
+  if (bestTime >= 15) {
+    return {
+      level: 3,
+      phase: "TENTATIVA",
+      title: "PRIMEIRA TENTATIVA",
+      text: "Seu controle na progressão já permite começar a incluir uma tentativa técnica em sessões apropriadas.",
+      coachTitle: "Liberada 1 tentativa técnica",
+      coachText: "Após aquecimento e estando descansado, faça no máximo uma tentativa técnica de barra completa. Sem balanço e sem insistir se falhar."
+    };
+  }
+
+  if (bestTime >= 10) {
+    return {
+      level: 2,
+      phase: "NEGATIVAS",
+      title: "FORÇA ESPECÍFICA",
+      text: "Você está na fase de negativas controladas e isometrias mais firmes.",
+      coachTitle: "Fortalecer a descida",
+      coachText: "Priorize negativas lentas e seguras. Ainda não precisa acumular tentativas completas."
+    };
+  }
+
+  if (bestTime >= 5) {
+    return {
+      level: 1,
+      phase: "ISOMETRIA",
+      title: "GANHAR CONTROLE",
+      text: "Sua base está evoluindo. O foco agora é sustentar posições assistidas com postura limpa.",
+      coachTitle: "Aumentar o controle",
+      coachText: `Seu melhor tempo controlado é ${Math.round(bestTime)} s. Tente igualar essa marca com boa técnica antes de aumentar 1–2 segundos.`
+    };
+  }
+
+  return {
+    level: 0,
+    phase: "BASE",
+    title: "PRIMEIRA BARRA",
+    text: "Seu ponto de partida é 0 barras completas. A missão agora é construir força e controle até liberar a primeira tentativa técnica.",
+    coachTitle: "Construir a base",
+    coachText: "Priorize retrações escapulares, sustentação assistida curta e negativas somente quando conseguir executá-las com segurança."
+  };
+}
+
+function renderBarScreen() {
+  const profile = getAdaptiveProfile();
+  const bestTime = profile.bestBar === null ? 0 : profile.bestBar;
+  const fullReps = getBestFullBarReps();
+  const sessions = getBarSessions();
+  const phase = getBarProgressPhase(bestTime, fullReps);
+
+  const setText = (id, value) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  };
+
+  setText("barFullReps", String(fullReps));
+  setText("barBestTime", `${Math.round(bestTime)} s`);
+  setText("barSessionCount", String(sessions.length));
+  setText("barPhase", phase.phase);
+  setText("barLevelTitle", phase.title);
+  setText("barLevelText", phase.text);
+  setText("barLevelNumber", String(phase.level));
+  setText("barCoachTitle", phase.coachTitle);
+  setText("barCoachText", phase.coachText);
+
+  for (let i = 0; i <= 4; i += 1) {
+    const step = document.getElementById(`barStep${i}`);
+    if (!step) continue;
+    step.classList.toggle("active", i <= phase.level);
+    step.classList.toggle("current", i === phase.level);
+  }
+
+  const barHistory = document.getElementById("barHistory");
+  if (barHistory) {
+    barHistory.innerHTML = "";
+
+    const entries = [];
+
+    sessions.forEach(session => {
+      const barResult = session.results.find(result =>
+        String(result.exercise || "").toLowerCase().includes("barra")
+      );
+
+      entries.push({
+        date: session.date,
+        type: "progress",
+        value: Number(barResult?.result) || 0
+      });
+    });
+
+    getBarRepsHistory().forEach(item => {
+      entries.push({
+        date: item.date,
+        type: "full",
+        value: Number(item.reps) || 0
+      });
+    });
+
+    entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    if (!entries.length) {
+      barHistory.innerHTML = `
+        <div class="history-empty">
+          <strong>NENHUM REGISTRO AINDA</strong>
+          <p>As sessões e marcas da barra aparecerão aqui.</p>
+        </div>
+      `;
+    } else {
+      entries.slice(0, 12).forEach(entry => {
+        const item = document.createElement("div");
+        item.className = "history-item";
+
+        const isFull = entry.type === "full";
+        item.innerHTML = `
+          <div class="history-item-main">
+            <span>${isFull ? "💪" : "⏱"}</span>
+            <div>
+              <strong>${isFull ? "BARRA COMPLETA" : "PROGRESSÃO DE BARRA"}</strong>
+              <small>${formatHistoryDate(entry.date)}</small>
+              <p>${isFull ? "Melhor marca registrada de repetições completas." : "Tempo controlado registrado no treino."}</p>
+            </div>
+          </div>
+          <b>${isFull ? `${Math.round(entry.value)} rep` : `${Math.round(entry.value)} s`}</b>
+        `;
+
+        barHistory.appendChild(item);
+      });
+    }
+  }
+}
+
+function openBarScreen() {
+  renderBarScreen();
+
+  const screen = document.getElementById("barScreen");
+  if (!screen) return;
+
+  screen.classList.remove("hidden");
+  screen.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  screen.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function closeBarScreen() {
+  const screen = document.getElementById("barScreen");
+  if (!screen) return;
+
+  screen.classList.add("hidden");
+  screen.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+function saveFullBarReps() {
+  const input = document.getElementById("barFullRepsInput");
+  const status = document.getElementById("barSaveStatus");
+  if (!input) return;
+
+  const reps = Number(input.value);
+
+  if (!Number.isInteger(reps) || reps < 0 || reps > 50) {
+    if (status) status.textContent = "Informe um número válido de repetições.";
+    return;
+  }
+
+  const currentBest = getBestFullBarReps();
+
+  if (reps < currentBest) {
+    if (status) {
+      status.textContent = `Sua melhor marca já é ${currentBest}. O recorde não será reduzido.`;
+    }
+    return;
+  }
+
+  const history = getBarRepsHistory();
+  history.push({
+    date: new Date().toISOString(),
+    reps
+  });
+
+  saveBarRepsHistory(history);
+  input.value = "";
+
+  if (status) {
+    status.textContent =
+      reps === 0
+        ? "Nível 0 confirmado. Continue construindo sua primeira barra."
+        : reps === 1
+          ? "PRIMEIRA BARRA REGISTRADA! Agora a missão é chegar a 2 repetições."
+          : `Marca salva: ${reps} barras completas.`;
+  }
+
+  renderBarScreen();
+}
+
 function bindEvents() {
   document.getElementById("startWorkoutBtn")?.addEventListener("click", openTrainingScreen);
   document.getElementById("trainingBackBtn")?.addEventListener("click", closeTrainingScreen);
@@ -1372,6 +1623,13 @@ function bindEvents() {
 
   document.getElementById("runningBackBtn")?.addEventListener("click", closeRunningScreen);
   document.getElementById("save2400Btn")?.addEventListener("click", save2400Test);
+
+  document.querySelectorAll('[data-nav="barra"]').forEach(button => {
+    button.addEventListener("click", openBarScreen);
+  });
+
+  document.getElementById("barBackBtn")?.addEventListener("click", closeBarScreen);
+  document.getElementById("saveBarRepsBtn")?.addEventListener("click", saveFullBarReps);
 }
 
 function init() {
