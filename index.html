@@ -387,6 +387,152 @@
     </div>
   </section>
 
+
+  <!-- =====================================================
+       V1.2 — TELA DE EVOLUÇÃO E HISTÓRICO
+       ===================================================== -->
+  <section class="evolution-screen hidden" id="evolutionScreen" aria-hidden="true">
+    <div class="evolution-shell">
+      <header class="evolution-topbar">
+        <button class="evolution-back" id="evolutionBackBtn" aria-label="Voltar">
+          ←
+        </button>
+
+        <div>
+          <span>MISSÃO TAF</span>
+          <h2>EVOLUÇÃO</h2>
+        </div>
+
+        <div class="evolution-badge">
+          HISTÓRICO
+        </div>
+      </header>
+
+      <div class="evolution-content">
+        <article class="evolution-hero">
+          <div>
+            <span>PROGRESSO GERAL</span>
+            <strong id="evolutionReadiness">8%</strong>
+            <p>Baseado nos treinos concluídos e resultados registrados neste aparelho.</p>
+          </div>
+
+          <div class="evolution-ring" id="evolutionRing">
+            <span id="evolutionRingValue">8%</span>
+          </div>
+        </article>
+
+        <div class="evolution-stats-grid">
+          <article>
+            <span>TREINOS</span>
+            <strong id="evolutionWorkoutCount">0</strong>
+            <small>concluídos</small>
+          </article>
+
+          <article>
+            <span>CORRIDA</span>
+            <strong id="evolutionBestRun">—</strong>
+            <small>melhor distância</small>
+          </article>
+
+          <article>
+            <span>BARRA</span>
+            <strong id="evolutionBestBar">0 s</strong>
+            <small>melhor progressão</small>
+          </article>
+
+          <article>
+            <span>REMADOR</span>
+            <strong id="evolutionBestCore">—</strong>
+            <small>melhor série</small>
+          </article>
+        </div>
+
+        <article class="evolution-panel">
+          <div class="evolution-panel-head">
+            <div>
+              <span>DESEMPENHO</span>
+              <h3>MEUS MELHORES RESULTADOS</h3>
+            </div>
+          </div>
+
+          <div class="personal-records">
+            <div class="record-row">
+              <div>
+                <span>🏃</span>
+                <div>
+                  <strong>Corrida</strong>
+                  <small>Maior distância registrada</small>
+                </div>
+              </div>
+              <b id="recordRun">—</b>
+            </div>
+
+            <div class="record-row">
+              <div>
+                <span>💪</span>
+                <div>
+                  <strong>Barra — nível 0</strong>
+                  <small>Melhor tempo controlado</small>
+                </div>
+              </div>
+              <b id="recordBar">0 s</b>
+            </div>
+
+            <div class="record-row">
+              <div>
+                <span>🔥</span>
+                <div>
+                  <strong>Core / remador</strong>
+                  <small>Maior série registrada</small>
+                </div>
+              </div>
+              <b id="recordCore">—</b>
+            </div>
+
+            <div class="record-row">
+              <div>
+                <span>🪢</span>
+                <div>
+                  <strong>Corda</strong>
+                  <small>Maior volume registrado</small>
+                </div>
+              </div>
+              <b id="recordRope">—</b>
+            </div>
+          </div>
+        </article>
+
+        <article class="evolution-panel">
+          <div class="evolution-panel-head">
+            <div>
+              <span>HISTÓRICO</span>
+              <h3>ÚLTIMOS TREINOS</h3>
+            </div>
+
+            <button type="button" id="clearHistoryBtn">
+              LIMPAR
+            </button>
+          </div>
+
+          <div class="history-list" id="historyList">
+            <div class="history-empty">
+              <strong>NENHUM TREINO REGISTRADO</strong>
+              <p>Conclua um treino para começar seu histórico.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="evolution-panel evolution-next-step">
+          <span>PRÓXIMA META</span>
+          <strong id="evolutionNextGoal">Construir a primeira barra completa</strong>
+          <p id="evolutionNextGoalText">
+            Continue registrando seus resultados. O treinador usará seu histórico para ajustar sua progressão.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <div class="modal hidden" id="finishModal">
     <div class="modal-card">
       <button class="close-btn" id="finishModalCloseBtn">×</button>
