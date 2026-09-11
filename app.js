@@ -598,6 +598,30 @@ function renderExercise() {
   document.getElementById("exerciseRest").textContent = exercise.rest;
   document.getElementById("exerciseObjective").textContent = exercise.objective;
 
+  const coachAction = document.getElementById("coachAction");
+  const coachDetail = document.getElementById("coachDetail");
+  if (coachAction && coachDetail) {
+    if (exercise.name.toLowerCase().includes("corrida")) {
+      coachAction.textContent = "AGORA: FAÇA A CORRIDA";
+      coachDetail.textContent = `Siga o ritmo indicado por ${exercise.prescription}. Não tente bater recorde hoje; cumpra a sessão e registre a distância ao terminar.`;
+    } else if (exercise.name.toLowerCase().includes("barra")) {
+      coachAction.textContent = "AGORA: TREINE A PROGRESSÃO";
+      coachDetail.textContent = "Faça uma série por vez com controle. Use o botão DESCANSO entre as séries. Como seu nível inicial é 0 barras, não tente compensar com movimentos descontrolados.";
+    } else if (exercise.name.toLowerCase().includes("remador") || exercise.name.toLowerCase().includes("core")) {
+      coachAction.textContent = "AGORA: PRIORIZE A TÉCNICA";
+      coachDetail.textContent = "Faça as repetições devagar e coordenadas. Nesta fase, uma repetição correta vale mais do que várias rápidas e mal executadas.";
+    } else if (exercise.name.toLowerCase().includes("corda")) {
+      coachAction.textContent = "AGORA: COMPLETE OS BLOCOS";
+      coachDetail.textContent = "Divida o volume em blocos. Descanse quando indicado e mantenha saltos baixos. Se a panturrilha estiver muito sobrecarregada, reduza o volume.";
+    } else if (exercise.name.toLowerCase().includes("flex")) {
+      coachAction.textContent = "AGORA: FAÇA AS SÉRIES";
+      coachDetail.textContent = "Execute com o corpo alinhado e pare antes da técnica desmontar. Use o descanso entre as séries.";
+    } else {
+      coachAction.textContent = "AGORA: CUMPRA ESTA ETAPA";
+      coachDetail.textContent = `Faça ${exercise.prescription} seguindo as instruções abaixo. Depois conclua a etapa para receber a próxima orientação.`;
+    }
+  }
+
   const list = document.getElementById("exerciseInstructions");
   list.innerHTML = "";
   exercise.instructions.forEach((instruction) => {
