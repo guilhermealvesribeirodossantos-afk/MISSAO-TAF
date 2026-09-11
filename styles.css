@@ -2203,3 +2203,170 @@ h1 span{color:var(--green)}
   }
 }
 
+/* =========================================================
+   V1.4.1 — REDESIGN "MISSÃO ATUAL"
+   ========================================================= */
+
+.quote-card,
+.paper-note{
+  display:none !important;
+}
+
+.mission-current-card{
+  position:relative;
+  overflow:hidden;
+  padding:16px;
+  border:1px solid rgba(143,227,109,.18);
+  border-radius:16px;
+  background:
+    linear-gradient(135deg,rgba(9,18,11,.95),rgba(3,8,5,.94));
+  box-shadow:
+    0 14px 36px rgba(0,0,0,.28),
+    inset 0 0 0 1px rgba(255,255,255,.01);
+}
+
+.mission-current-card::before{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  top:-95px;
+  right:-75px;
+  border-radius:50%;
+  background:rgba(143,227,109,.06);
+  filter:blur(2px);
+  pointer-events:none;
+}
+
+.mission-current-card::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:72%;
+  height:2px;
+  background:linear-gradient(90deg,var(--green),rgba(143,227,109,0));
+  opacity:.75;
+}
+
+.mission-current-top{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.mission-current-kicker{
+  display:block;
+  color:var(--green);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.16em;
+}
+
+.mission-current-top strong{
+  display:block;
+  margin-top:5px;
+  color:#fff;
+  font:900 23px/1 "Barlow Condensed",sans-serif;
+  letter-spacing:.02em;
+}
+
+.mission-current-status{
+  flex:0 0 auto;
+  padding:7px 9px;
+  border:1px solid rgba(143,227,109,.22);
+  border-radius:9px;
+  background:rgba(143,227,109,.07);
+  color:var(--green);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.mission-current-focus{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:15px;
+  padding:11px 12px;
+  border:1px solid rgba(255,255,255,.045);
+  border-radius:11px;
+  background:rgba(255,255,255,.018);
+}
+
+.mission-current-focus span{
+  color:#dfe6e1;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.mission-current-focus i{
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 10px rgba(143,227,109,.42);
+}
+
+.mission-current-card p{
+  position:relative;
+  z-index:1;
+  margin:12px 0 0;
+  color:#919d94;
+  font-size:10px;
+  line-height:1.5;
+}
+
+.mission-current-footer{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:13px;
+  padding-top:11px;
+  border-top:1px solid rgba(143,227,109,.08);
+}
+
+.mission-current-footer span{
+  color:#6f7c73;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+
+.mission-current-footer strong{
+  color:var(--green);
+  text-align:right;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.06em;
+}
+
+@media(max-width:520px){
+  .mission-current-card{
+    padding:14px;
+  }
+
+  .mission-current-top strong{
+    font-size:20px;
+  }
+
+  .mission-current-footer{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:5px;
+  }
+
+  .mission-current-footer strong{
+    text-align:left;
+  }
+}
+
