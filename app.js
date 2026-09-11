@@ -1178,6 +1178,175 @@ function renderAdaptiveGuidance(exercise) {
   if (coachDetail) coachDetail.textContent = guidance.text;
 }
 
+
+function getRunningTests() {
+  try {
+    return JSON.parse(localStorage.getItem("missaoTAF.running2400") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveRunningTests(tests) {
+  localStorage.setItem("missaoTAF.running2400", JSON.stringify(tests));
+}
+
+function formatSeconds(totalSeconds) {
+  const seconds = Math.max(0, Math.round(Number(totalSeconds) || 0));
+  const minutes = Math.floor(seconds / 60);
+  const rest = seconds % 60;
+  return `${minutes}:${String(rest).padStart(2, "0")}`;
+}
+
+function formatPace(totalSeconds, distanceKm = 2.4) {
+  const paceSeconds = totalSeconds / distanceKm;
+  const minutes = Math.floor(paceSeconds / 60);
+  const seconds = Math.round(paceSeconds % 60);
+  return `${minutes}:${String(seconds).padStart(2, "0")}/km`;
+}
+
+function renderRunningScreen() {
+  const profile = getAdaptiveProfile();
+  const tests = getRunningTests();
+
+  const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  };
+
+  setText(
+    "runningBestDistance",
+    profile.bestRun === null ? "—" : `${profile.bestRun.toFixed(2)} km`
+  );
+
+  if (tests.length) {
+    const bestTest = tests.reduce((best, current) =>
+      current.totalSeconds < best.totalSeconds ? current : best
+    );
+
+    setText("runningBest2400", formatSeconds(bestTest.totalSeconds));
+    setText("runningPace2400", formatPace(bestTest.totalSeconds));
+    setText("runningTestCount", String(tests.length));
+
+    const coachTitle = document.getElementById("runningCoachTitle");
+    const coachText = document.getElementById("runningCoachText");
+
+    if (coachTitle && coachText) {
+      if (bestTest.totalSeconds > 13 * 60) {
+        coachTitle.textContent = "Ganhar ritmo sem perder a base";
+        coachText.textContent =
+          `Seu melhor 2.400 m está em ${formatSeconds(bestTest.totalSeconds)}. Priorize treinos consistentes e tente reduzir o tempo gradualmente, sem testar máximo em toda sessão.`;
+      } else if (bestTest.totalSeconds > 12 * 60 + 30) {
+        coachTitle.textContent = "Aproximando da faixa mínima";
+        coachText.textContent =
+          `Seu melhor 2.400 m está em ${formatSeconds(bestTest.totalSeconds)}. Você está perto da faixa mínima de referência; agora o foco é ganhar alguns segundos com constância e boa distribuição de ritmo.`;
+      } else {
+        coachTitle.textContent = "Consolidar desempenho";
+        coachText.textContent =
+          `Seu melhor 2.400 m está em ${formatSeconds(bestTest.totalSeconds)}. Agora o objetivo é repetir esse desempenho com segurança e criar margem, em vez de depender de um único teste bom.`;
+      }
+    }
+  } else {
+    setText("runningBest2400", "—");
+    setText("runningPace2400", "—");
+    setText("runningTestCount", "0");
+  }
+
+  const history = document.getElementById("runningTestHistory");
+  if (history) {
+    history.innerHTML = "";
+
+    if (!tests.length) {
+      history.innerHTML = `
+        <div class="history-empty">
+          <strong>NENHUM TESTE REGISTRADO</strong>
+          <p>Seu primeiro teste de 2.400 m aparecerá aqui.</p>
+        </div>
+      `;
+    } else {
+      [...tests].reverse().slice(0, 10).forEach(test => {
+        const item = document.createElement("div");
+        item.className = "history-item";
+        item.innerHTML = `
+          <div class="history-item-main">
+            <span>🏃</span>
+            <div>
+              <strong>TESTE DE 2.400 M</strong>
+              <small>${formatHistoryDate(test.date)}</small>
+              <p>Pace médio: ${formatPace(test.totalSeconds)}</p>
+            </div>
+          </div>
+          <b>${formatSeconds(test.totalSeconds)}</b>
+        `;
+        history.appendChild(item);
+      });
+    }
+  }
+}
+
+function openRunningScreen() {
+  renderRunningScreen();
+
+  const screen = document.getElementById("runningScreen");
+  if (!screen) return;
+
+  screen.classList.remove("hidden");
+  screen.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  screen.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function closeRunningScreen() {
+  const screen = document.getElementById("runningScreen");
+  if (!screen) return;
+
+  screen.classList.add("hidden");
+  screen.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+function save2400Test() {
+  const minutesInput = document.getElementById("runningMinutesInput");
+  const secondsInput = document.getElementById("runningSecondsInput");
+  const status = document.getElementById("runningSaveStatus");
+
+  if (!minutesInput || !secondsInput) return;
+
+  const minutes = Number(minutesInput.value);
+  const seconds = Number(secondsInput.value);
+
+  if (
+    !Number.isFinite(minutes) ||
+    !Number.isFinite(seconds) ||
+    minutes < 0 ||
+    seconds < 0 ||
+    seconds > 59 ||
+    (minutes === 0 && seconds === 0)
+  ) {
+    if (status) status.textContent = "Informe um tempo válido.";
+    return;
+  }
+
+  const totalSeconds = Math.round(minutes * 60 + seconds);
+
+  const tests = getRunningTests();
+  tests.push({
+    date: new Date().toISOString(),
+    totalSeconds
+  });
+
+  saveRunningTests(tests);
+
+  minutesInput.value = "";
+  secondsInput.value = "";
+
+  if (status) {
+    status.textContent = `Teste salvo: ${formatSeconds(totalSeconds)} — pace ${formatPace(totalSeconds)}.`;
+  }
+
+  renderRunningScreen();
+}
+
 function bindEvents() {
   document.getElementById("startWorkoutBtn")?.addEventListener("click", openTrainingScreen);
   document.getElementById("trainingBackBtn")?.addEventListener("click", closeTrainingScreen);
@@ -1196,6 +1365,13 @@ function bindEvents() {
   document.querySelectorAll('[data-nav="evolucao"]').forEach(button => {
     button.addEventListener("click", openEvolutionScreen);
   });
+
+  document.querySelectorAll('[data-nav="corrida"]').forEach(button => {
+    button.addEventListener("click", openRunningScreen);
+  });
+
+  document.getElementById("runningBackBtn")?.addEventListener("click", closeRunningScreen);
+  document.getElementById("save2400Btn")?.addEventListener("click", save2400Test);
 }
 
 function init() {
