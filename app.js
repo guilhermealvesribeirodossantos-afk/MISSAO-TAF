@@ -3,9 +3,7 @@ const APP_CONFIG = {
   referenceWorkDate: new Date("2026-09-11T12:00:00"),
   workStart: "08:00",
   workEnd: "20:00",
-  leaveHome: "07:45",
-  daycareLeave: "15:40",
-  daycarePickup: "16:00"
+  leaveHome: "07:45"
 };
 
 const WORKOUTS = {
@@ -22,25 +20,33 @@ const WORKOUTS = {
         purpose: "Construir base aeróbica sem esgotar as pernas.",
         prescription: "20 minutos",
         rest: "—",
+        timerSeconds: 1200,
+        resultType: "distance",
+        resultLabel: "Distância realizada (km)",
+        resultPlaceholder: "Ex.: 3.2",
         instructions: [
           "Comece em ritmo confortável.",
           "Mantenha a respiração controlada.",
-          "Evite transformar o treino em teste máximo.",
-          "Se precisar caminhar, retome a corrida assim que recuperar o fôlego."
+          "Não transforme esta sessão em teste máximo.",
+          "Se precisar caminhar, retome a corrida quando recuperar o fôlego."
         ],
         objective: "Terminar sentindo que ainda conseguiria continuar por alguns minutos."
       },
       {
         icon: "💪",
         name: "Progressão de barra",
-        purpose: "Desenvolver força de puxada e controle corporal até conquistar a primeira repetição.",
+        purpose: "Construir força específica até conquistar a primeira barra.",
         prescription: "3 séries",
         rest: "60–90 s",
+        restSeconds: 75,
+        resultType: "number",
+        resultLabel: "Melhor sustentação/negativa (segundos)",
+        resultPlaceholder: "Ex.: 8",
         instructions: [
-          "Faça retrações escapulares controladas.",
-          "Inclua sustentação isométrica se conseguir chegar à posição alta com apoio.",
-          "Use negativas lentas somente se tiver uma forma segura de subir até o topo.",
-          "Não force tentativas completas repetidas se a técnica estiver quebrando."
+          "Comece com retrações escapulares controladas.",
+          "Faça isometria se conseguir chegar ao topo com apoio seguro.",
+          "Use negativas lentas somente com uma forma segura de começar na posição alta.",
+          "Pare antes de perder totalmente o controle."
         ],
         objective: "Fortalecer costas, bíceps, pegada e controle escapular para sair de 0 para a primeira barra."
       },
@@ -50,13 +56,17 @@ const WORKOUTS = {
         purpose: "Aprender o padrão do abdominal remador e fortalecer o tronco.",
         prescription: "3 séries técnicas",
         rest: "45–60 s",
+        restSeconds: 50,
+        resultType: "number",
+        resultLabel: "Melhor série com técnica (repetições)",
+        resultPlaceholder: "Ex.: 10",
         instructions: [
-          "Primeiro priorize aprender o movimento sem velocidade.",
-          "Mantenha o movimento controlado e sem puxar o pescoço.",
-          "Pare a série se começar a perder a técnica.",
-          "Nesta fase, qualidade vale mais que quantidade."
+          "Priorize aprender o movimento sem velocidade.",
+          "Mantenha o movimento controlado.",
+          "Não puxe o pescoço.",
+          "Pare a série quando a técnica começar a quebrar."
         ],
-        objective: "Construir técnica antes de iniciar testes cronometrados de 30 segundos."
+        objective: "Construir técnica antes de iniciar testes cronometrados."
       },
       {
         icon: "🧘",
@@ -64,13 +74,15 @@ const WORKOUTS = {
         purpose: "Reduzir rigidez e preparar o corpo para o próximo treino.",
         prescription: "5 minutos",
         rest: "—",
+        timerSeconds: 300,
+        resultType: "none",
         instructions: [
           "Mobilize tornozelos e panturrilhas.",
-          "Alongue posteriores de coxa de forma leve.",
           "Faça mobilidade de quadril.",
+          "Alongue posteriores de forma leve.",
           "Não force posições dolorosas."
         ],
-        objective: "Ajudar na recuperação e preservar corrida, corda e exercícios de peso corporal."
+        objective: "Melhorar recuperação e manter consistência."
       }
     ]
   },
@@ -85,86 +97,108 @@ const WORKOUTS = {
       {
         icon: "🏃",
         name: "Corrida de base",
-        purpose: "Construir resistência contínua e criar base para os 2.400 m.",
+        purpose: "Construir resistência contínua para os 2.400 m.",
         prescription: "25–35 minutos",
         rest: "—",
+        timerSeconds: 1800,
+        resultType: "distance",
+        resultLabel: "Distância realizada (km)",
+        resultPlaceholder: "Ex.: 5.0",
         instructions: [
           "Comece em ritmo confortável.",
-          "Tente reduzir o número de pausas ao longo das semanas.",
+          "Tente reduzir as pausas ao longo das semanas.",
           "Não faça sprint nesta sessão.",
-          "Registre tempo total e se houve pausas."
+          "Registre a distância ao terminar."
         ],
-        objective: "Aumentar sua capacidade de correr de forma contínua antes de acelerar."
+        objective: "Aumentar a capacidade de correr continuamente antes de acelerar."
       },
       {
         icon: "💪",
         name: "Progressão para primeira barra",
-        purpose: "Dar prioridade máxima à sua evolução na barra fixa.",
+        purpose: "Dar prioridade máxima à evolução na barra fixa.",
         prescription: "4 blocos",
         rest: "60–90 s",
+        restSeconds: 75,
+        resultType: "number",
+        resultLabel: "Melhor sustentação/negativa (segundos)",
+        resultPlaceholder: "Ex.: 10",
         instructions: [
-          "Retração escapular: movimento curto e controlado.",
-          "Isometria: segure a melhor posição que conseguir com segurança.",
-          "Negativas: desça devagar quando houver apoio seguro para começar no alto.",
-          "Finalize com remada invertida ou outra puxada com peso corporal disponível."
+          "Faça retrações escapulares.",
+          "Use isometrias seguras.",
+          "Faça negativas apenas com apoio seguro.",
+          "Priorize controle em vez de quantidade."
         ],
         objective: "Acumular força específica sem depender de academia."
       },
       {
         icon: "🔥",
-        name: "Técnica de abdominal remador",
+        name: "Abdominal remador",
         purpose: "Aprender o exercício antes de perseguir velocidade.",
         prescription: "4 séries técnicas",
         rest: "45–60 s",
+        restSeconds: 50,
+        resultType: "number",
+        resultLabel: "Melhor série técnica (repetições)",
+        resultPlaceholder: "Ex.: 12",
         instructions: [
           "Faça repetições controladas.",
-          "Mantenha tronco e pernas coordenados.",
+          "Coordene tronco e pernas.",
           "Evite embalo excessivo.",
-          "Quando a execução estiver consistente, o site liberará testes cronometrados."
+          "Pare quando a execução perder qualidade."
         ],
-        objective: "Criar uma execução repetível para futuramente medir desempenho em 30 segundos."
+        objective: "Criar uma execução repetível para futuramente medir desempenho."
       },
       {
         icon: "🤸",
         name: "Flexões",
-        purpose: "Manter resistência de membros superiores e capacidade de esforço.",
+        purpose: "Manter resistência de membros superiores.",
         prescription: "4 séries submáximas",
         rest: "60 s",
+        restSeconds: 60,
+        resultType: "number",
+        resultLabel: "Melhor série (repetições)",
+        resultPlaceholder: "Ex.: 15",
         instructions: [
-          "Pare cada série antes de perder a técnica.",
-          "Mantenha corpo alinhado.",
+          "Mantenha o corpo alinhado.",
           "Desça de forma controlada.",
-          "Não precisa atingir falha em todas as séries."
+          "Pare antes de perder a técnica.",
+          "Não é necessário atingir a falha em todas as séries."
         ],
-        objective: "Manter a base que você já construiu com os circuitos de corda."
+        objective: "Manter a base de força e resistência."
       },
       {
         icon: "🪢",
         name: "Corda complementar",
-        purpose: "Trabalhar condicionamento, coordenação e resistência das pernas.",
+        purpose: "Trabalhar condicionamento e coordenação.",
         prescription: "1.000–2.000 pulos",
-        rest: "30–60 s por bloco",
+        rest: "30–60 s",
+        restSeconds: 45,
+        resultType: "number",
+        resultLabel: "Total de pulos",
+        resultPlaceholder: "Ex.: 1600",
         instructions: [
           "Divida em blocos de 200 pulos.",
-          "Se as panturrilhas estiverem muito cansadas da corrida, reduza o volume.",
           "Use saltos baixos e econômicos.",
-          "A corda complementa a corrida; não substitui o treino de corrida."
+          "Reduza o volume se a panturrilha estiver muito cansada.",
+          "A corda complementa a corrida; não substitui a corrida."
         ],
-        objective: "Aproveitar sua experiência com corda sem comprometer a recuperação."
+        objective: "Usar sua experiência com corda sem prejudicar a recuperação."
       },
       {
         icon: "🧘",
         name: "Mobilidade e recuperação",
-        purpose: "Encerrar o treino reduzindo tensão nas principais regiões usadas.",
+        purpose: "Encerrar o treino reduzindo tensão.",
         prescription: "8–10 minutos",
         rest: "—",
+        timerSeconds: 480,
+        resultType: "none",
         instructions: [
           "Panturrilhas e tornozelos.",
           "Posteriores de coxa.",
           "Quadril.",
           "Ombros e dorsais."
         ],
-        objective: "Melhorar recuperação para manter consistência na escala 12x36."
+        objective: "Melhorar recuperação para manter consistência."
       }
     ]
   },
@@ -179,30 +213,38 @@ const WORKOUTS = {
       {
         icon: "🏃",
         name: "Corrida curta controlada",
-        purpose: "Manter frequência de corrida sem ocupar grande parte da folga.",
+        purpose: "Manter frequência de corrida com uma sessão objetiva.",
         prescription: "20–25 minutos",
         rest: "—",
+        timerSeconds: 1200,
+        resultType: "distance",
+        resultLabel: "Distância realizada (km)",
+        resultPlaceholder: "Ex.: 3.5",
         instructions: [
           "Use ritmo confortável.",
           "Evite teste máximo.",
           "Priorize continuidade.",
-          "Se o dia estiver apertado, esta é a parte mais importante da sessão."
+          "Se o dia estiver apertado, esta é a parte principal."
         ],
         objective: "Manter consistência semanal na corrida."
       },
       {
         icon: "💪",
         name: "Barra — técnica e força",
-        purpose: "Não perder frequência no trabalho para a primeira barra.",
+        purpose: "Manter frequência no trabalho para a primeira barra.",
         prescription: "3 blocos",
         rest: "60–90 s",
+        restSeconds: 75,
+        resultType: "number",
+        resultLabel: "Melhor sustentação/negativa (segundos)",
+        resultPlaceholder: "Ex.: 8",
         instructions: [
           "Retrações escapulares.",
           "Isometrias seguras.",
-          "Negativas se houver apoio.",
+          "Negativas com apoio seguro.",
           "Pare antes de perder o controle."
         ],
-        objective: "Manter estímulo frequente sem transformar o dia em treino longo."
+        objective: "Manter estímulo frequente sem treino longo."
       },
       {
         icon: "🔥",
@@ -210,11 +252,15 @@ const WORKOUTS = {
         purpose: "Reforçar tronco e técnica do remador.",
         prescription: "3 séries",
         rest: "45 s",
+        restSeconds: 45,
+        resultType: "number",
+        resultLabel: "Melhor série técnica (repetições)",
+        resultPlaceholder: "Ex.: 10",
         instructions: [
-          "Execução lenta.",
+          "Execução controlada.",
           "Técnica antes de velocidade.",
-          "Sem puxar o pescoço.",
-          "Finalize a série ao perder coordenação."
+          "Não puxe o pescoço.",
+          "Pare ao perder coordenação."
         ],
         objective: "Consolidar o movimento do remador."
       },
@@ -224,6 +270,8 @@ const WORKOUTS = {
         purpose: "Fechar a sessão e facilitar recuperação.",
         prescription: "5 minutos",
         rest: "—",
+        timerSeconds: 300,
+        resultType: "none",
         instructions: [
           "Panturrilha.",
           "Tornozelo.",
@@ -239,7 +287,13 @@ const WORKOUTS = {
 const state = {
   workoutKey: "trabalho",
   exerciseIndex: 0,
-  completedExercises: new Set()
+  completedExercises: new Set(),
+  results: {},
+  timerId: null,
+  timerRemaining: 0,
+  timerInitial: 0,
+  timerRunning: false,
+  timerMode: "exercise"
 };
 
 function normalizeDate(date) {
@@ -247,18 +301,15 @@ function normalizeDate(date) {
 }
 
 function getDiffDays(dateA, dateB) {
-  const oneDay = 24 * 60 * 60 * 1000;
-  return Math.round((normalizeDate(dateA) - normalizeDate(dateB)) / oneDay);
+  return Math.round((normalizeDate(dateA) - normalizeDate(dateB)) / 86400000);
 }
 
 function isWorkDay(date) {
-  const diff = getDiffDays(date, APP_CONFIG.referenceWorkDate);
-  return Math.abs(diff) % 2 === 0;
+  return Math.abs(getDiffDays(date, APP_CONFIG.referenceWorkDate)) % 2 === 0;
 }
 
 function isWeekend(date) {
-  const day = date.getDay();
-  return day === 0 || day === 6;
+  return date.getDay() === 0 || date.getDay() === 6;
 }
 
 function getWorkoutKeyForDate(date) {
@@ -277,10 +328,7 @@ function formatLongDate(date) {
 
 function formatShortWeekday(date) {
   return new Intl.DateTimeFormat("pt-BR", { weekday: "short" })
-    .format(date)
-    .replace(".", "")
-    .slice(0, 3)
-    .toUpperCase();
+    .format(date).replace(".", "").slice(0, 3).toUpperCase();
 }
 
 function formatDayMonth(date) {
@@ -305,87 +353,65 @@ function saveWorkoutHistory(entry) {
 }
 
 function calculateReadiness() {
-  const history = getStoredHistory();
-  const completed = history.length;
-
-  if (completed === 0) return 8;
+  const completed = getStoredHistory().length;
   return Math.min(100, 8 + completed * 4);
 }
 
 function renderReadiness() {
   const value = calculateReadiness();
-  const readiness = document.getElementById("readinessValue");
-  const progress = document.getElementById("progressPercent");
-
-  if (readiness) readiness.textContent = `${value}%`;
-  if (progress) progress.textContent = `${value}%`;
+  document.getElementById("readinessValue").textContent = `${value}%`;
+  document.getElementById("progressPercent").textContent = `${value}%`;
 
   const ring = document.querySelector(".ring");
   if (ring) {
-    const deg = Math.max(0, Math.min(360, value * 3.6));
+    const deg = value * 3.6;
     ring.style.background = `conic-gradient(var(--green) 0 ${deg}deg, #202921 ${deg}deg 360deg)`;
   }
 }
 
 function renderToday() {
   const today = new Date();
-  const workoutKey = getWorkoutKeyForDate(today);
-  const workout = WORKOUTS[workoutKey];
+  state.workoutKey = getWorkoutKeyForDate(today);
+  const workout = WORKOUTS[state.workoutKey];
 
-  state.workoutKey = workoutKey;
+  document.getElementById("todayDate").textContent = formatLongDate(today);
+  document.getElementById("dayTypeLabel").textContent = workout.dayLabel;
+  document.getElementById("dayTypeTime").textContent = workout.dayTime;
+  document.getElementById("dayTypeNote").textContent = workout.dayNote;
+  document.getElementById("workoutTitle").textContent = workout.title;
+  document.getElementById("workoutDuration").textContent = workout.duration;
 
-  const todayDate = document.getElementById("todayDate");
-  const dayTypeLabel = document.getElementById("dayTypeLabel");
-  const dayTypeTime = document.getElementById("dayTypeTime");
-  const dayTypeNote = document.getElementById("dayTypeNote");
-  const workoutTitle = document.getElementById("workoutTitle");
-  const workoutDuration = document.getElementById("workoutDuration");
   const preview = document.getElementById("workoutPreview");
+  preview.innerHTML = "";
 
-  if (todayDate) todayDate.textContent = formatLongDate(today);
-  if (dayTypeLabel) dayTypeLabel.textContent = workout.dayLabel;
-  if (dayTypeTime) dayTypeTime.textContent = workout.dayTime;
-  if (dayTypeNote) dayTypeNote.textContent = workout.dayNote;
-  if (workoutTitle) workoutTitle.textContent = workout.title;
-  if (workoutDuration) workoutDuration.textContent = workout.duration;
-
-  if (preview) {
-    preview.innerHTML = "";
-
-    workout.exercises.slice(0, 5).forEach((exercise) => {
-      const item = document.createElement("div");
-      item.className = "workout-item";
-      item.innerHTML = `
-        <div class="workout-icon">${exercise.icon}</div>
-        <div>
-          <strong>${exercise.name}</strong>
-          <small>${exercise.purpose}</small>
-        </div>
-        <em>${exercise.prescription}</em>
-      `;
-      preview.appendChild(item);
-    });
-  }
+  workout.exercises.slice(0, 5).forEach((exercise) => {
+    const item = document.createElement("div");
+    item.className = "workout-item";
+    item.innerHTML = `
+      <div class="workout-icon">${exercise.icon}</div>
+      <div>
+        <strong>${exercise.name}</strong>
+        <small>${exercise.purpose}</small>
+      </div>
+      <em>${exercise.prescription}</em>
+    `;
+    preview.appendChild(item);
+  });
 }
 
 function renderWeek() {
   const container = document.getElementById("weekStrip");
-  if (!container) return;
-
   container.innerHTML = "";
-
   const today = normalizeDate(new Date());
 
-  for (let i = 0; i < 7; i += 1) {
+  for (let i = 0; i < 7; i++) {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
 
-    const workoutKey = getWorkoutKeyForDate(date);
-    const work = workoutKey === "trabalho";
-
-    let statusText = "Folga";
-    if (work) statusText = "Trabalho";
-    else if (workoutKey === "folgaFimDeSemana") statusText = "Folga c/ filha";
+    const key = getWorkoutKeyForDate(date);
+    const work = key === "trabalho";
+    let status = work ? "Trabalho" : "Folga";
+    if (key === "folgaFimDeSemana") status = "Folga c/ filha";
 
     const card = document.createElement("div");
     card.className = `day-card ${work ? "work" : "off"} ${i === 0 ? "today" : ""}`;
@@ -393,11 +419,143 @@ function renderWeek() {
       <strong>${formatShortWeekday(date)}</strong>
       <span>${formatDayMonth(date)}</span>
       <i></i>
-      <span>${statusText}</span>
+      <span>${status}</span>
     `;
-
     container.appendChild(card);
   }
+}
+
+function formatClock(seconds) {
+  const safe = Math.max(0, seconds);
+  const min = Math.floor(safe / 60);
+  const sec = safe % 60;
+  return `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+}
+
+function stopTimer() {
+  if (state.timerId) clearInterval(state.timerId);
+  state.timerId = null;
+  state.timerRunning = false;
+}
+
+function setTimer(seconds, mode = "exercise") {
+  stopTimer();
+  state.timerMode = mode;
+  state.timerInitial = seconds;
+  state.timerRemaining = seconds;
+  updateTimerUI();
+}
+
+function updateTimerUI() {
+  const display = document.getElementById("liveTimerDisplay");
+  const startBtn = document.getElementById("timerStartPauseBtn");
+  const label = document.getElementById("timerModeLabel");
+
+  if (!display) return;
+
+  display.textContent = formatClock(state.timerRemaining);
+  if (label) label.textContent = state.timerMode === "rest" ? "DESCANSO" : "CRONÔMETRO";
+  if (startBtn) startBtn.textContent = state.timerRunning ? "PAUSAR" : "INICIAR";
+}
+
+function toggleTimer() {
+  if (state.timerRemaining <= 0) {
+    state.timerRemaining = state.timerInitial;
+  }
+
+  if (state.timerRunning) {
+    stopTimer();
+    updateTimerUI();
+    return;
+  }
+
+  state.timerRunning = true;
+  updateTimerUI();
+
+  state.timerId = setInterval(() => {
+    state.timerRemaining -= 1;
+    updateTimerUI();
+
+    if (state.timerRemaining <= 0) {
+      stopTimer();
+      updateTimerUI();
+
+      if (navigator.vibrate) navigator.vibrate([180, 100, 180]);
+    }
+  }, 1000);
+}
+
+function resetTimer() {
+  stopTimer();
+  state.timerRemaining = state.timerInitial;
+  updateTimerUI();
+}
+
+function startRestTimer() {
+  const exercise = WORKOUTS[state.workoutKey].exercises[state.exerciseIndex];
+  if (!exercise.restSeconds) return;
+
+  setTimer(exercise.restSeconds, "rest");
+  toggleTimer();
+}
+
+function renderTimer(exercise) {
+  const box = document.getElementById("liveTimerBox");
+  if (!box) return;
+
+  const seconds = exercise.timerSeconds || exercise.restSeconds || 0;
+
+  if (!seconds) {
+    box.classList.add("hidden");
+    stopTimer();
+    return;
+  }
+
+  box.classList.remove("hidden");
+  setTimer(seconds, exercise.timerSeconds ? "exercise" : "rest");
+
+  const restBtn = document.getElementById("startRestBtn");
+  if (restBtn) {
+    restBtn.classList.toggle("hidden", !exercise.restSeconds);
+  }
+}
+
+function renderResultInput(exercise) {
+  const box = document.getElementById("exerciseResultBox");
+  const input = document.getElementById("exerciseResultInput");
+  const label = document.getElementById("exerciseResultLabel");
+
+  if (!box || !input || !label) return;
+
+  if (exercise.resultType === "none") {
+    box.classList.add("hidden");
+    return;
+  }
+
+  box.classList.remove("hidden");
+  label.textContent = exercise.resultLabel;
+  input.type = "number";
+  input.step = exercise.resultType === "distance" ? "0.01" : "1";
+  input.min = "0";
+  input.placeholder = exercise.resultPlaceholder || "";
+  input.value = state.results[state.exerciseIndex] ?? "";
+}
+
+function saveCurrentResult() {
+  const input = document.getElementById("exerciseResultInput");
+  if (!input || input.closest(".hidden")) return true;
+
+  const value = input.value.trim();
+
+  if (!value) {
+    input.focus();
+    input.classList.add("input-error");
+    return false;
+  }
+
+  input.classList.remove("input-error");
+  state.results[state.exerciseIndex] = Number(value);
+  return true;
 }
 
 function openTrainingScreen() {
@@ -405,32 +563,24 @@ function openTrainingScreen() {
 
   state.exerciseIndex = 0;
   state.completedExercises = new Set();
+  state.results = {};
+
+  document.getElementById("trainingSessionTitle").textContent = workout.title;
+  document.getElementById("trainingSessionDuration").textContent = workout.duration;
+  document.getElementById("trainingDayType").textContent = workout.dayLabel;
 
   const screen = document.getElementById("trainingScreen");
-  const title = document.getElementById("trainingSessionTitle");
-  const duration = document.getElementById("trainingSessionDuration");
-  const dayType = document.getElementById("trainingDayType");
-
-  if (title) title.textContent = workout.title;
-  if (duration) duration.textContent = workout.duration;
-  if (dayType) dayType.textContent = workout.dayLabel;
-
-  if (screen) {
-    screen.classList.remove("hidden");
-    screen.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-  }
+  screen.classList.remove("hidden");
+  screen.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
 
   renderExercise();
 }
 
 function closeTrainingScreen() {
-  const screen = document.getElementById("trainingScreen");
-  if (screen) {
-    screen.classList.add("hidden");
-    screen.setAttribute("aria-hidden", "true");
-  }
-
+  stopTimer();
+  document.getElementById("trainingScreen").classList.add("hidden");
+  document.getElementById("trainingScreen").setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
 }
 
@@ -456,104 +606,86 @@ function renderExercise() {
     list.appendChild(li);
   });
 
-  const progress = ((state.exerciseIndex + 1) / total) * 100;
-  document.getElementById("trainingProgressFill").style.width = `${progress}%`;
+  document.getElementById("trainingProgressFill").style.width =
+    `${((state.exerciseIndex + 1) / total) * 100}%`;
 
   const previousBtn = document.getElementById("previousExerciseBtn");
   previousBtn.disabled = state.exerciseIndex === 0;
   previousBtn.style.opacity = state.exerciseIndex === 0 ? ".45" : "1";
 
-  const completeBtn = document.getElementById("completeExerciseBtn");
-  const isLast = state.exerciseIndex === total - 1;
-  completeBtn.textContent = isLast ? "FINALIZAR TREINO" : "CONCLUIR E AVANÇAR";
+  document.getElementById("completeExerciseBtn").textContent =
+    state.exerciseIndex === total - 1 ? "FINALIZAR TREINO" : "CONCLUIR E AVANÇAR";
+
+  renderTimer(exercise);
+  renderResultInput(exercise);
+
+  document.querySelector(".training-screen").scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function completeCurrentExercise() {
-  const workout = WORKOUTS[state.workoutKey];
-  const total = workout.exercises.length;
+  if (!saveCurrentResult()) return;
 
+  const workout = WORKOUTS[state.workoutKey];
   state.completedExercises.add(state.exerciseIndex);
 
-  if (state.exerciseIndex < total - 1) {
+  if (state.exerciseIndex < workout.exercises.length - 1) {
     state.exerciseIndex += 1;
     renderExercise();
-    return;
+  } else {
+    finishWorkout();
   }
-
-  finishWorkout();
 }
 
 function previousExercise() {
   if (state.exerciseIndex <= 0) return;
-
+  saveCurrentResult();
   state.exerciseIndex -= 1;
   renderExercise();
 }
 
 function finishWorkout() {
+  stopTimer();
   const workout = WORKOUTS[state.workoutKey];
-  const today = new Date();
+
+  const resultDetails = workout.exercises.map((exercise, index) => ({
+    exercise: exercise.name,
+    result: state.results[index] ?? null,
+    resultLabel: exercise.resultLabel || null
+  }));
 
   saveWorkoutHistory({
-    date: today.toISOString(),
+    date: new Date().toISOString(),
     workoutKey: state.workoutKey,
     title: workout.title,
     completed: workout.exercises.length,
-    total: workout.exercises.length
+    total: workout.exercises.length,
+    results: resultDetails
   });
 
   closeTrainingScreen();
 
-  const finishModal = document.getElementById("finishModal");
-  const count = document.getElementById("finishExerciseCount");
+  document.getElementById("finishExerciseCount").textContent =
+    `${workout.exercises.length}/${workout.exercises.length}`;
 
-  if (count) {
-    count.textContent = `${workout.exercises.length}/${workout.exercises.length}`;
-  }
-
-  if (finishModal) {
-    finishModal.classList.remove("hidden");
-  }
-
+  document.getElementById("finishModal").classList.remove("hidden");
   renderReadiness();
 }
 
 function closeFinishModal() {
-  const finishModal = document.getElementById("finishModal");
-  if (finishModal) finishModal.classList.add("hidden");
+  document.getElementById("finishModal").classList.add("hidden");
 }
 
 function bindEvents() {
-  const startWorkoutBtn = document.getElementById("startWorkoutBtn");
-  const trainingBackBtn = document.getElementById("trainingBackBtn");
-  const completeExerciseBtn = document.getElementById("completeExerciseBtn");
-  const previousExerciseBtn = document.getElementById("previousExerciseBtn");
-  const finishModalCloseBtn = document.getElementById("finishModalCloseBtn");
-  const finishWorkoutBtn = document.getElementById("finishWorkoutBtn");
+  document.getElementById("startWorkoutBtn")?.addEventListener("click", openTrainingScreen);
+  document.getElementById("trainingBackBtn")?.addEventListener("click", closeTrainingScreen);
+  document.getElementById("completeExerciseBtn")?.addEventListener("click", completeCurrentExercise);
+  document.getElementById("previousExerciseBtn")?.addEventListener("click", previousExercise);
+  document.getElementById("finishModalCloseBtn")?.addEventListener("click", closeFinishModal);
+  document.getElementById("finishWorkoutBtn")?.addEventListener("click", closeFinishModal);
 
-  if (startWorkoutBtn) {
-    startWorkoutBtn.addEventListener("click", openTrainingScreen);
-  }
-
-  if (trainingBackBtn) {
-    trainingBackBtn.addEventListener("click", closeTrainingScreen);
-  }
-
-  if (completeExerciseBtn) {
-    completeExerciseBtn.addEventListener("click", completeCurrentExercise);
-  }
-
-  if (previousExerciseBtn) {
-    previousExerciseBtn.addEventListener("click", previousExercise);
-  }
-
-  if (finishModalCloseBtn) {
-    finishModalCloseBtn.addEventListener("click", closeFinishModal);
-  }
-
-  if (finishWorkoutBtn) {
-    finishWorkoutBtn.addEventListener("click", closeFinishModal);
-  }
+  document.getElementById("timerStartPauseBtn")?.addEventListener("click", toggleTimer);
+  document.getElementById("timerResetBtn")?.addEventListener("click", resetTimer);
+  document.getElementById("startRestBtn")?.addEventListener("click", startRestTimer);
 }
 
 function init() {
