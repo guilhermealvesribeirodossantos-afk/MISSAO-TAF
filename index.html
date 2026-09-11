@@ -2,121 +2,355 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b120d" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#050805" />
   <title>MISSÃO TAF</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="page-bg"></div>
-  <div class="app-shell">
+  <div class="page-bg" aria-hidden="true"></div>
+
+  <main class="app-shell">
     <header class="topbar">
       <div class="brand-wrap">
-        <div class="brand-mark">▲</div>
+        <div class="brand-mark" aria-hidden="true"></div>
+
         <div>
           <h1>MISSÃO <span>TAF</span></h1>
           <p>PREPARAÇÃO FÍSICA PMMG</p>
         </div>
       </div>
-      <div class="status-pill"><span class="dot"></span> Em evolução</div>
+
+      <div class="status-pill">
+        <span class="dot"></span>
+        Em evolução
+      </div>
     </header>
 
-    <main class="content">
-      <section class="hero-card panel">
+    <section class="content">
+      <article class="panel hero-card">
         <div>
-          <p class="eyebrow" id="todayLabel">SEXTA-FEIRA, 11 DE SETEMBRO DE 2026</p>
-          <h2>Disciplina hoje. Farda amanhã.</h2>
+          <p class="eyebrow" id="todayDate">SEXTA-FEIRA, 11 DE SETEMBRO DE 2026</p>
+          <h2>DISCIPLINA HOJE. FARDA AMANHÃ.</h2>
           <p class="muted">Plano físico adaptado à sua escala 12x36.</p>
         </div>
+
         <div class="readiness">
-          <span>PRONTIDÃO</span>
+          <span>Prontidão</span>
           <strong id="readinessValue">8%</strong>
         </div>
-      </section>
+      </article>
 
-      <section class="work-card panel" id="workCard">
-        <div class="icon-box danger">💼</div>
+      <article class="panel work-card">
+        <div class="icon-box">💼</div>
+
         <div>
-          <small id="dayType">DIA DE TRABALHO</small>
-          <strong id="dayHours">08:00 — 20:00</strong>
+          <small id="dayTypeLabel">DIA DE TRABALHO</small>
+          <strong id="dayTypeTime">08:00 – 20:00</strong>
         </div>
-        <div class="right-note" id="dayNote">Saída de casa 07:45</div>
-      </section>
 
-      <section class="panel workout-panel">
+        <div class="right-note" id="dayTypeNote">
+          Saída de casa 07:45
+        </div>
+      </article>
+
+      <article class="panel workout-panel">
         <div class="section-head">
           <div>
-            <span class="section-kicker">TREINO DE HOJE</span>
-            <h3 id="workoutTitle">Sessão curta de preparação PMMG</h3>
+            <div class="section-kicker">TREINO DE HOJE</div>
+            <h3 id="workoutTitle">SESSÃO CURTA DE PREPARAÇÃO PMMG</h3>
           </div>
-          <div class="duration"><span>⏱</span><strong id="workoutDuration">35 min</strong></div>
+
+          <div class="duration">
+            ⏱
+            <strong id="workoutDuration">35 min</strong>
+          </div>
         </div>
 
-        <div class="workout-list" id="workoutList"></div>
-
-        <button class="primary-btn" id="startWorkoutBtn">▶ INICIAR TREINO</button>
-      </section>
-
-      <section class="grid two-col">
-        <article class="panel">
-          <div class="section-head simple"><h3>MINHAS METAS</h3></div>
-          <div class="goal-list">
-            <div class="goal-row"><div><strong>Barra fixa</strong><small>Atual: 0</small></div><span>Meta: 1ª barra</span></div>
-            <div class="goal-row"><div><strong>Corrida 2.400 m</strong><small>Marco zero pendente</small></div><span>Meta: evoluir ritmo</span></div>
-            <div class="goal-row"><div><strong>Abdominal remador</strong><small>Nunca testado</small></div><span>Meta: técnica primeiro</span></div>
-            <div class="goal-row"><div><strong>Corda</strong><small>Histórico: 2.000 pulos</small></div><span>Complementar</span></div>
+        <div class="workout-list" id="workoutPreview">
+          <div class="workout-item">
+            <div class="workout-icon">🏃</div>
+            <div>
+              <strong>Corrida leve</strong>
+              <small>Base aeróbica sem esgotar as pernas</small>
+            </div>
+            <em>20 min</em>
           </div>
-        </article>
 
+          <div class="workout-item">
+            <div class="workout-icon">💪</div>
+            <div>
+              <strong>Progressão de barra</strong>
+              <small>Controle escapular + negativas/assistidas conforme nível</small>
+            </div>
+            <em>3 séries</em>
+          </div>
+
+          <div class="workout-item">
+            <div class="workout-icon">🔥</div>
+            <div>
+              <strong>Core / remador</strong>
+              <small>Aprender técnica e fortalecer o tronco</small>
+            </div>
+            <em>3 séries</em>
+          </div>
+
+          <div class="workout-item">
+            <div class="workout-icon">🧘</div>
+            <div>
+              <strong>Mobilidade</strong>
+              <small>Panturrilha, tornozelo, quadril e posterior</small>
+            </div>
+            <em>5 min</em>
+          </div>
+        </div>
+
+        <button class="primary-btn" id="startWorkoutBtn">
+          ▶ INICIAR TREINO
+        </button>
+      </article>
+
+      <div class="grid two-col">
         <article class="panel">
-          <div class="section-head simple"><h3>MEU PROGRESSO</h3></div>
-          <div class="progress-wrap">
-            <div class="ring"><span id="ringValue">8%</span></div>
-            <div class="stats">
-              <div><small>Fase</small><strong>Base TAF</strong></div>
-              <div><small>Academia</small><strong>Sem academia</strong></div>
-              <div><small>Prioridade</small><strong>Corrida + Barra</strong></div>
+          <div class="section-head simple">
+            <h3>MINHAS METAS</h3>
+          </div>
+
+          <div class="goal-list">
+            <div class="goal-row">
+              <div>
+                <strong>Barra fixa</strong>
+                <small>Atual: 0</small>
+              </div>
+              <span>Meta: 1ª barra</span>
+            </div>
+
+            <div class="goal-row">
+              <div>
+                <strong>Corrida 2.400 m</strong>
+                <small>Marco zero pendente</small>
+              </div>
+              <span>Meta: evoluir ritmo</span>
+            </div>
+
+            <div class="goal-row">
+              <div>
+                <strong>Abdominal remador</strong>
+                <small>Nunca testado</small>
+              </div>
+              <span>Meta: técnica primeiro</span>
+            </div>
+
+            <div class="goal-row">
+              <div>
+                <strong>Corda</strong>
+                <small>Histórico: 2.000 pulos</small>
+              </div>
+              <span>Complementar</span>
             </div>
           </div>
         </article>
-      </section>
 
-      <section class="panel">
+        <article class="panel">
+          <div class="section-head simple">
+            <h3>MEU PROGRESSO</h3>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="ring">
+              <span id="progressPercent">8%</span>
+            </div>
+
+            <div class="stats">
+              <div>
+                <small>Fase</small>
+                <strong>Base TAF</strong>
+              </div>
+
+              <div>
+                <small>Academia</small>
+                <strong>Sem academia</strong>
+              </div>
+
+              <div>
+                <small>Prioridade</small>
+                <strong>Corrida + Barra</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <article class="panel">
         <div class="section-head simple">
           <h3>MINHA SEMANA <small>(12x36)</small></h3>
           <span class="muted">Trabalho / Folga</span>
         </div>
-        <div class="week-strip" id="weekStrip"></div>
-      </section>
 
-      <section class="panel quote-card">
+        <div class="week-strip" id="weekStrip">
+          <!-- preenchido pelo app.js -->
+        </div>
+      </article>
+
+      <article class="panel quote-card">
         <div class="paper-note">
           <span>FOCO</span>
           <strong>Corrida. Barra. Core. Consistência.</strong>
         </div>
-        <p>O site vai priorizar preparação física para a PMMG e adaptar a carga ao seu dia de trabalho, folga útil ou folga com sua filha.</p>
-      </section>
-    </main>
 
-    <nav class="bottom-nav">
-      <button class="active">⌂<span>Hoje</span></button>
-      <button>🏃<span>Corrida</span></button>
-      <button>💪<span>Barra</span></button>
-      <button>📈<span>Evolução</span></button>
-    </nav>
-  </div>
+        <p>
+          O site vai priorizar preparação física para a PMMG e adaptar a carga ao seu dia de trabalho,
+          folga útil ou folga com sua filha.
+        </p>
+      </article>
+    </section>
+  </main>
 
-  <div class="modal hidden" id="workoutModal">
+  <nav class="bottom-nav" aria-label="Navegação principal">
+    <button class="active" data-nav="hoje">
+      <span>⌂</span>
+      <span>Hoje</span>
+    </button>
+
+    <button data-nav="corrida">
+      <span>🏃</span>
+      <span>Corrida</span>
+    </button>
+
+    <button data-nav="barra">
+      <span>💪</span>
+      <span>Barra</span>
+    </button>
+
+    <button data-nav="evolucao">
+      <span>📈</span>
+      <span>Evolução</span>
+    </button>
+  </nav>
+
+  <!-- =====================================================
+       TELA DE SESSÃO DE TREINO
+       ===================================================== -->
+  <section class="training-screen hidden" id="trainingScreen" aria-hidden="true">
+    <div class="training-shell">
+      <header class="training-topbar">
+        <button class="training-back" id="trainingBackBtn" aria-label="Voltar">
+          ←
+        </button>
+
+        <div>
+          <span class="training-kicker">MISSÃO TAF</span>
+          <h2>TREINO DE HOJE</h2>
+        </div>
+
+        <div class="training-progress-mini">
+          <span id="trainingStepCounter">1/4</span>
+        </div>
+      </header>
+
+      <div class="training-summary-card">
+        <div>
+          <small id="trainingDayType">DIA DE TRABALHO</small>
+          <strong id="trainingSessionTitle">SESSÃO CURTA DE PREPARAÇÃO PMMG</strong>
+        </div>
+
+        <div>
+          <span>⏱</span>
+          <strong id="trainingSessionDuration">35 min</strong>
+        </div>
+      </div>
+
+      <div class="training-main">
+        <div class="training-progress-bar">
+          <div class="training-progress-fill" id="trainingProgressFill"></div>
+        </div>
+
+        <article class="exercise-card" id="exerciseCard">
+          <div class="exercise-icon-large" id="exerciseIcon">🏃</div>
+
+          <div class="exercise-content">
+            <div class="exercise-step-label" id="exerciseStepLabel">EXERCÍCIO 1 DE 4</div>
+
+            <h2 id="exerciseName">Corrida leve</h2>
+
+            <p class="exercise-purpose" id="exercisePurpose">
+              Construir base aeróbica sem esgotar as pernas.
+            </p>
+
+            <div class="exercise-prescription">
+              <div>
+                <small>EXECUÇÃO</small>
+                <strong id="exercisePrescription">20 minutos</strong>
+              </div>
+
+              <div>
+                <small>DESCANSO</small>
+                <strong id="exerciseRest">—</strong>
+              </div>
+            </div>
+
+            <div class="exercise-instructions">
+              <h3>COMO FAZER</h3>
+              <ul id="exerciseInstructions">
+                <li>Comece em ritmo confortável.</li>
+                <li>Mantenha a respiração controlada.</li>
+                <li>Não transforme este treino em teste máximo.</li>
+              </ul>
+            </div>
+
+            <div class="exercise-note">
+              <strong>OBJETIVO</strong>
+              <p id="exerciseObjective">
+                Terminar a corrida sentindo que ainda conseguiria continuar por alguns minutos.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <div class="training-actions">
+          <button class="secondary-training-btn" id="previousExerciseBtn">
+            ← ANTERIOR
+          </button>
+
+          <button class="primary-training-btn" id="completeExerciseBtn">
+            CONCLUIR EXERCÍCIO
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal hidden" id="finishModal">
     <div class="modal-card">
-      <button class="close-btn" id="closeModal">×</button>
-      <p class="eyebrow">MISSÃO DO DIA</p>
-      <h2 id="modalTitle">Treino iniciado</h2>
-      <p class="muted">Marque cada bloco quando concluir.</p>
-      <div id="modalExercises" class="modal-exercises"></div>
-      <button class="primary-btn" id="finishWorkout">CONCLUIR TREINO</button>
+      <button class="close-btn" id="finishModalCloseBtn">×</button>
+
+      <div class="section-kicker">TREINO FINALIZADO</div>
+      <h2>MISSÃO CUMPRIDA.</h2>
+
+      <p class="muted">
+        Seu treino de hoje foi concluído e será salvo no histórico deste dispositivo.
+      </p>
+
+      <div class="finish-summary">
+        <div>
+          <small>Exercícios</small>
+          <strong id="finishExerciseCount">4/4</strong>
+        </div>
+
+        <div>
+          <small>Status</small>
+          <strong>Concluído</strong>
+        </div>
+      </div>
+
+      <button class="primary-btn" id="finishWorkoutBtn">
+        VOLTAR PARA O INÍCIO
+      </button>
     </div>
   </div>
 
