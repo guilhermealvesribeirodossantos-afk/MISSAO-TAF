@@ -857,10 +857,185 @@ function finishWorkout() {
 
   document.getElementById("finishModal").classList.remove("hidden");
   renderReadiness();
+  renderEvolution();
 }
 
 function closeFinishModal() {
   document.getElementById("finishModal").classList.add("hidden");
+}
+
+
+function getAllRecordedResults(history) {
+  return history.flatMap(entry => Array.isArray(entry.results) ? entry.results : []);
+}
+
+function findBestResult(results, keywords) {
+  const matches = results.filter(item => {
+    const name = String(item.exercise || "").toLowerCase();
+    return keywords.some(keyword => name.includes(keyword));
+  });
+
+  const values = matches
+    .map(item => Number(item.result))
+    .filter(value => Number.isFinite(value) && value >= 0);
+
+  return values.length ? Math.max(...values) : null;
+}
+
+function formatHistoryDate(iso) {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "DATA INDISPONÍVEL";
+
+  return new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  }).format(date);
+}
+
+function renderEvolution() {
+  const history = getStoredHistory();
+  const results = getAllRecordedResults(history);
+  const readiness = calculateReadiness();
+
+  const bestRun = findBestResult(results, ["corrida"]);
+  const bestBar = findBestResult(results, ["barra"]);
+  const bestCore = findBestResult(results, ["remador", "core"]);
+  const bestRope = findBestResult(results, ["corda"]);
+
+  const setText = (id, value) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  };
+
+  setText("evolutionReadiness", `${readiness}%`);
+  setText("evolutionRingValue", `${readiness}%`);
+  setText("evolutionWorkoutCount", String(history.length));
+
+  const runText = bestRun === null ? "—" : `${bestRun.toFixed(2)} km`;
+  const barText = bestBar === null ? "0 s" : `${Math.round(bestBar)} s`;
+  const coreText = bestCore === null ? "—" : `${Math.round(bestCore)} reps`;
+  const ropeText = bestRope === null ? "—" : `${Math.round(bestRope)} pulos`;
+
+  setText("evolutionBestRun", runText);
+  setText("evolutionBestBar", barText);
+  setText("evolutionBestCore", coreText);
+  setText("recordRun", runText);
+  setText("recordBar", barText);
+  setText("recordCore", coreText);
+  setText("recordRope", ropeText);
+
+  const ring = document.getElementById("evolutionRing");
+  if (ring) {
+    const deg = Math.max(0, Math.min(360, readiness * 3.6));
+    ring.style.background =
+      `conic-gradient(var(--green) 0 ${deg}deg, #1a241c ${deg}deg 360deg)`;
+  }
+
+  const historyList = document.getElementById("historyList");
+  if (historyList) {
+    historyList.innerHTML = "";
+
+    if (!history.length) {
+      historyList.innerHTML = `
+        <div class="history-empty">
+          <strong>NENHUM TREINO REGISTRADO</strong>
+          <p>Conclua um treino para começar seu histórico.</p>
+        </div>
+      `;
+    } else {
+      [...history].reverse().slice(0, 10).forEach(entry => {
+        const item = document.createElement("div");
+        item.className = "history-item";
+
+        const recorded = Array.isArray(entry.results)
+          ? entry.results.filter(result => result.result !== null && result.result !== undefined)
+          : [];
+
+        const resultSummary = recorded.length
+          ? recorded.slice(0, 3).map(result => {
+              const name = String(result.exercise || "");
+              const value = result.result;
+              if (name.toLowerCase().includes("corrida")) return `${name}: ${Number(value).toFixed(2)} km`;
+              if (name.toLowerCase().includes("barra")) return `${name}: ${Math.round(Number(value))} s`;
+              if (name.toLowerCase().includes("corda")) return `${name}: ${Math.round(Number(value))} pulos`;
+              return `${name}: ${Math.round(Number(value))} reps`;
+            }).join(" • ")
+          : "Treino concluído";
+
+        item.innerHTML = `
+          <div class="history-item-main">
+            <span>✓</span>
+            <div>
+              <strong>${entry.title || "TREINO MISSÃO TAF"}</strong>
+              <small>${formatHistoryDate(entry.date)}</small>
+              <p>${resultSummary}</p>
+            </div>
+          </div>
+          <b>${entry.completed || 0}/${entry.total || 0}</b>
+        `;
+
+        historyList.appendChild(item);
+      });
+    }
+  }
+
+  const nextGoal = document.getElementById("evolutionNextGoal");
+  const nextGoalText = document.getElementById("evolutionNextGoalText");
+
+  if (nextGoal && nextGoalText) {
+    if (bestBar === null || bestBar < 5) {
+      nextGoal.textContent = "Construir controle para a primeira barra";
+      nextGoalText.textContent =
+        "Continue com retrações, isometrias e negativas controladas. O foco ainda é criar força e controle.";
+    } else if (bestBar < 15) {
+      nextGoal.textContent = "Aproximar da primeira barra completa";
+      nextGoalText.textContent =
+        "Seu tempo controlado está evoluindo. Continue fortalecendo a fase de sustentação e descida antes de aumentar tentativas completas.";
+    } else {
+      nextGoal.textContent = "Testar a primeira barra com técnica";
+      nextGoalText.textContent =
+        "Você já acumulou um bom tempo controlado na progressão. Em uma sessão apropriada, o treinador poderá incluir uma tentativa completa segura.";
+    }
+  }
+}
+
+function openEvolutionScreen() {
+  renderEvolution();
+
+  const screen = document.getElementById("evolutionScreen");
+  if (!screen) return;
+
+  screen.classList.remove("hidden");
+  screen.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  screen.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function closeEvolutionScreen() {
+  const screen = document.getElementById("evolutionScreen");
+  if (!screen) return;
+
+  screen.classList.add("hidden");
+  screen.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+function clearWorkoutHistory() {
+  const history = getStoredHistory();
+  if (!history.length) return;
+
+  const confirmed = window.confirm(
+    "Tem certeza que deseja apagar todo o histórico de treinos deste aparelho?"
+  );
+
+  if (!confirmed) return;
+
+  localStorage.removeItem("missaoTAF.history");
+  renderReadiness();
+  renderEvolution();
 }
 
 function bindEvents() {
@@ -875,6 +1050,12 @@ function bindEvents() {
   document.getElementById("timerResetBtn")?.addEventListener("click", resetTimer);
   document.getElementById("startRestBtn")?.addEventListener("click", startRestTimer);
   document.getElementById("coachSeriesDoneBtn")?.addEventListener("click", completeCoachSeries);
+  document.getElementById("evolutionBackBtn")?.addEventListener("click", closeEvolutionScreen);
+  document.getElementById("clearHistoryBtn")?.addEventListener("click", clearWorkoutHistory);
+
+  document.querySelectorAll('[data-nav="evolucao"]').forEach(button => {
+    button.addEventListener("click", openEvolutionScreen);
+  });
 }
 
 function init() {
