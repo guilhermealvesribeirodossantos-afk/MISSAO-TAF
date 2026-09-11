@@ -1606,3 +1606,101 @@ h1 span{color:var(--green)}
   font-size:11px;
   line-height:1.5;
 }
+
+/* =========================================================
+   V1.0 — TREINADOR SÉRIE POR SÉRIE
+   ========================================================= */
+
+.coach-series-box{
+  margin-top:12px;
+  padding:14px;
+  border:1px solid rgba(143,227,109,.24);
+  border-radius:14px;
+  background:
+    linear-gradient(135deg,rgba(143,227,109,.09),rgba(5,12,8,.88) 52%);
+  box-shadow:0 14px 32px rgba(0,0,0,.18);
+}
+
+.coach-series-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.coach-series-head span{
+  display:block;
+  color:#839087;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+
+.coach-series-head strong{
+  display:block;
+  margin-top:4px;
+  color:#fff;
+  font:900 20px/1 "Barlow Condensed",sans-serif;
+  letter-spacing:.035em;
+}
+
+.coach-series-head b{
+  min-width:48px;
+  padding:7px 9px;
+  border:1px solid rgba(143,227,109,.25);
+  border-radius:9px;
+  background:rgba(143,227,109,.07);
+  color:var(--green);
+  text-align:center;
+  font:900 14px Inter,sans-serif;
+}
+
+.coach-series-box > p{
+  margin:12px 0;
+  color:#d3dcd5;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.coach-series-actions button{
+  width:100%;
+  min-height:50px;
+  border:0;
+  border-radius:11px;
+  background:linear-gradient(90deg,#9fe878,#77cf55);
+  color:#071006;
+  cursor:pointer;
+  font:900 15px "Barlow Condensed",sans-serif;
+  letter-spacing:.035em;
+  box-shadow:0 8px 22px rgba(100,190,72,.13);
+}
+
+.coach-series-actions button:disabled{
+  cursor:default;
+  opacity:.58;
+  filter:saturate(.55);
+}
+
+.coach-series-box > small{
+  display:block;
+  margin-top:9px;
+  color:#839087;
+  font-size:9px;
+  line-height:1.4;
+}
+
+@media(max-width:420px){
+  .coach-series-box{
+    padding:13px;
+  }
+
+  .coach-series-head strong{
+    font-size:19px;
+  }
+
+  .coach-series-actions button{
+    min-height:52px;
+    font-size:14px;
+  }
+}
+
