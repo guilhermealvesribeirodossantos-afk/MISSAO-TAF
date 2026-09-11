@@ -640,88 +640,404 @@ h1 span{color:var(--green)}
   color:var(--muted);
 }
 
-/* MOBILE */
-@media(max-width:520px){
+
+/* =========================================================
+   V0.6 — MOBILE FIRST / IPHONE 17
+   ========================================================= */
+
+@media(max-width:759px){
+  :root{
+    --mobile-gap:10px;
+    --mobile-radius:14px;
+  }
+
+  body{
+    padding-bottom:calc(86px + env(safe-area-inset-bottom));
+    -webkit-text-size-adjust:100%;
+  }
+
   body::before{
     background:
       linear-gradient(
         180deg,
-        rgba(2,5,3,.34) 0%,
-        rgba(2,5,3,.30) 28%,
-        rgba(2,5,3,.44) 62%,
-        rgba(2,5,3,.66) 100%
+        rgba(2,5,3,.30) 0%,
+        rgba(2,5,3,.28) 24%,
+        rgba(2,5,3,.42) 56%,
+        rgba(2,5,3,.67) 100%
       ),
-      url("assets/fundo-missao-taf.png") 72% top / auto 100% no-repeat;
-    filter:saturate(.90) contrast(1.05) brightness(.92);
+      url("assets/fundo-missao-taf.png") 74% top / auto 100% no-repeat;
+    filter:saturate(.90) contrast(1.04) brightness(.92);
   }
 
-  .app-shell{padding:10px}
+  .app-shell{
+    width:100%;
+    max-width:none;
+    padding:
+      calc(10px + env(safe-area-inset-top))
+      10px
+      10px;
+  }
 
-  .topbar{padding-bottom:12px}
+  .content{
+    gap:10px;
+  }
+
+  .topbar{
+    padding:4px 2px 10px;
+    gap:8px;
+  }
+
+  .brand-wrap{
+    gap:9px;
+  }
 
   .brand-mark{
-    width:38px;
-    height:38px;
-    flex-basis:38px;
+    width:36px;
+    height:36px;
+    flex-basis:36px;
   }
 
-  h1{font-size:25px}
-  .brand-wrap p{font-size:8px}
+  h1{
+    font-size:24px;
+    letter-spacing:.025em;
+  }
+
+  .brand-wrap p{
+    margin-top:5px;
+    font-size:7.5px;
+    letter-spacing:.13em;
+  }
 
   .status-pill{
-    padding:8px 9px;
-    font-size:10px;
+    padding:7px 9px;
+    font-size:9.5px;
+    white-space:nowrap;
+  }
+
+  .panel{
+    border-radius:var(--mobile-radius);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
   }
 
   .hero-card{
-    min-height:128px;
-    padding:15px;
+    min-height:126px;
+    padding:14px;
+    align-items:flex-start;
   }
 
-  .hero-card h2{font-size:23px}
+  .eyebrow{
+    font-size:11px;
+    line-height:1.2;
+    max-width:230px;
+  }
+
+  .hero-card h2{
+    max-width:235px;
+    font-size:22px;
+    line-height:1.02;
+  }
+
+  .hero-card .muted{
+    max-width:225px;
+    margin-top:10px;
+    font-size:11px;
+    line-height:1.4;
+  }
 
   .readiness{
-    min-width:72px;
-    padding-left:10px;
+    min-width:62px;
+    padding-left:8px;
   }
 
-  .readiness strong{font-size:28px}
+  .readiness span{
+    font-size:8px;
+  }
+
+  .readiness strong{
+    font-size:27px;
+  }
 
   .work-card{
-    grid-template-columns:auto 1fr;
+    grid-template-columns:40px 1fr;
+    gap:10px;
+    padding:12px;
+  }
+
+  .icon-box{
+    width:40px;
+    height:40px;
+  }
+
+  .work-card small{
+    font-size:11px;
+  }
+
+  .work-card strong{
+    font-size:16px;
   }
 
   .right-note{
     grid-column:1/-1;
+    margin-top:2px;
     padding-top:8px;
     border-top:1px solid rgba(255,255,255,.04);
+    font-size:10px;
     text-align:left;
   }
 
   .workout-panel,
   .grid .panel,
   .quote-card{
-    padding:14px;
+    padding:13px;
+  }
+
+  .section-head{
+    gap:8px;
+  }
+
+  .section-kicker{
+    font-size:10px;
+  }
+
+  .section-head h3{
+    font-size:20px;
+    line-height:1.03;
+  }
+
+  .duration{
+    flex:0 0 auto;
+    padding:6px 8px;
+    font-size:10px;
+  }
+
+  .workout-list{
+    gap:8px;
+    margin:13px 0;
   }
 
   .workout-item{
-    grid-template-columns:40px 1fr;
+    grid-template-columns:38px 1fr auto;
+    gap:9px;
+    min-height:66px;
+    padding:10px;
+    border-radius:11px;
+  }
+
+  .workout-icon{
+    width:38px;
+    height:38px;
+    font-size:18px;
+  }
+
+  .workout-item strong{
+    font-size:13px;
+  }
+
+  .workout-item small{
+    font-size:10px;
+    line-height:1.35;
+  }
+
+  .workout-item em{
+    font-size:10px;
+    white-space:nowrap;
+  }
+
+  .primary-btn{
+    min-height:52px;
+    padding:14px 16px;
+    border-radius:12px;
+    font-size:18px;
+    touch-action:manipulation;
+  }
+
+  .two-col{
+    grid-template-columns:1fr;
+  }
+
+  .goal-list{
+    gap:7px;
+    margin-top:10px;
+  }
+
+  .goal-row{
+    min-height:58px;
+    padding:10px;
+  }
+
+  .goal-row strong{
+    font-size:13px;
+  }
+
+  .goal-row small{
+    font-size:9px;
+  }
+
+  .goal-row span{
+    max-width:112px;
+    font-size:10px;
+  }
+
+  .progress-wrap{
+    gap:14px;
+    align-items:center;
+  }
+
+  .ring{
+    width:78px;
+    height:78px;
+    flex-basis:78px;
+  }
+
+  .ring::after{
+    inset:8px;
+  }
+
+  .ring span{
+    font-size:22px;
+  }
+
+  .stats{
+    gap:8px;
+  }
+
+  .stats small{
+    font-size:9px;
+  }
+
+  .stats strong{
+    font-size:11px;
+  }
+
+  .week-strip{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+    padding:1px 1px 7px;
+    overflow-x:auto;
+    scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .day-card{
+    flex:0 0 82px;
+    min-width:82px;
+    min-height:102px;
+    padding:10px 7px;
+    scroll-snap-align:start;
+  }
+
+  .day-card strong{
+    font-size:14px;
+  }
+
+  .day-card span{
+    font-size:9px;
+  }
+
+  .paper-note{
+    padding:13px 14px;
+  }
+
+  .paper-note span{
+    font-size:13px;
+  }
+
+  .paper-note strong{
+    font-size:21px;
+    line-height:1.05;
+  }
+
+  .quote-card p{
+    font-size:11px;
+    line-height:1.5;
+  }
+
+  .bottom-nav{
+    bottom:calc(8px + env(safe-area-inset-bottom));
+    width:calc(100% - 16px);
+    padding:6px;
+    border-radius:16px;
+  }
+
+  .bottom-nav button{
+    min-height:48px;
+    padding:6px 3px;
+    font-size:16px;
+    touch-action:manipulation;
+  }
+
+  .bottom-nav button span{
+    font-size:8px;
+  }
+
+  .modal{
+    padding:
+      calc(14px + env(safe-area-inset-top))
+      12px
+      calc(14px + env(safe-area-inset-bottom));
+  }
+
+  .modal-card{
+    width:100%;
+    max-height:calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding:18px;
+    border-radius:16px;
+  }
+
+  .check-row{
+    padding:11px;
+  }
+}
+
+/* Ajuste extra para iPhones estreitos */
+@media(max-width:390px){
+  .status-pill{
+    font-size:8.5px;
+    padding:6px 8px;
+  }
+
+  .hero-card h2{
+    max-width:210px;
+    font-size:20px;
+  }
+
+  .hero-card .muted{
+    max-width:205px;
+    font-size:10px;
+  }
+
+  .workout-item{
+    grid-template-columns:36px 1fr;
   }
 
   .workout-item em{
     grid-column:2;
+    margin-top:-3px;
   }
 
-  .progress-wrap{
+  .goal-row{
     align-items:flex-start;
   }
+}
 
-  .ring{
-    width:84px;
-    height:84px;
-    flex-basis:84px;
+/* Paisagem no iPhone */
+@media(max-width:759px) and (orientation:landscape){
+  body::before{
+    background-position:76% 18%;
+    background-size:cover;
+  }
+
+  .bottom-nav{
+    display:none;
+  }
+
+  body{
+    padding-bottom:18px;
   }
 }
+
 
 /* DESKTOP */
 @media(min-width:760px){
