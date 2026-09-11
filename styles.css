@@ -1704,3 +1704,388 @@ h1 span{color:var(--green)}
   }
 }
 
+/* =========================================================
+   V1.2 — EVOLUÇÃO E HISTÓRICO
+   ========================================================= */
+
+.evolution-screen{
+  position:fixed;
+  inset:0;
+  z-index:70;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  background:
+    linear-gradient(180deg,rgba(2,5,3,.62),rgba(2,5,3,.88)),
+    url("assets/fundo-missao-taf.png") 72% top / auto 100% no-repeat,
+    #020402;
+  color:var(--text);
+}
+
+.evolution-shell{
+  width:min(760px,100%);
+  min-height:100%;
+  margin:0 auto;
+  padding:
+    calc(12px + env(safe-area-inset-top))
+    12px
+    calc(100px + env(safe-area-inset-bottom));
+}
+
+.evolution-topbar{
+  position:sticky;
+  top:0;
+  z-index:3;
+  display:grid;
+  grid-template-columns:44px 1fr auto;
+  align-items:center;
+  gap:10px;
+  margin:-12px -12px 12px;
+  padding:
+    calc(10px + env(safe-area-inset-top))
+    12px
+    10px;
+  border-bottom:1px solid rgba(143,227,109,.16);
+  background:rgba(3,8,5,.94);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+.evolution-back{
+  width:42px;
+  height:42px;
+  border:1px solid rgba(143,227,109,.20);
+  border-radius:12px;
+  background:rgba(143,227,109,.07);
+  color:#fff;
+  cursor:pointer;
+  font-size:23px;
+}
+
+.evolution-topbar > div:nth-child(2) span{
+  display:block;
+  color:var(--green);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+
+.evolution-topbar h2{
+  margin:4px 0 0;
+  font:900 22px/1 "Barlow Condensed",sans-serif;
+  letter-spacing:.04em;
+}
+
+.evolution-badge{
+  padding:7px 8px;
+  border:1px solid rgba(143,227,109,.18);
+  border-radius:9px;
+  color:var(--green);
+  background:rgba(143,227,109,.04);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.evolution-content{
+  display:grid;
+  gap:10px;
+}
+
+.evolution-hero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:16px;
+  border:1px solid rgba(143,227,109,.21);
+  border-radius:17px;
+  background:linear-gradient(135deg,rgba(11,23,14,.90),rgba(4,10,6,.91));
+  box-shadow:0 16px 42px rgba(0,0,0,.28);
+}
+
+.evolution-hero > div:first-child{
+  min-width:0;
+}
+
+.evolution-hero > div:first-child > span{
+  display:block;
+  color:var(--green);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+
+.evolution-hero > div:first-child > strong{
+  display:block;
+  margin-top:4px;
+  color:#fff;
+  font:900 36px/1 "Barlow Condensed",sans-serif;
+}
+
+.evolution-hero p{
+  max-width:330px;
+  margin:7px 0 0;
+  color:#96a199;
+  font-size:10px;
+  line-height:1.45;
+}
+
+.evolution-ring{
+  flex:0 0 76px;
+  width:76px;
+  height:76px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:conic-gradient(var(--green) 0 28.8deg,#1a241c 28.8deg 360deg);
+  position:relative;
+}
+
+.evolution-ring::after{
+  content:"";
+  position:absolute;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:#071009;
+}
+
+.evolution-ring span{
+  position:relative;
+  z-index:1;
+  color:#fff;
+  font:900 17px "Barlow Condensed",sans-serif;
+}
+
+.evolution-stats-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.evolution-stats-grid article{
+  min-height:105px;
+  padding:13px;
+  border:1px solid rgba(143,227,109,.14);
+  border-radius:13px;
+  background:rgba(6,14,9,.83);
+  backdrop-filter:blur(8px);
+}
+
+.evolution-stats-grid span{
+  display:block;
+  color:#819087;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.11em;
+}
+
+.evolution-stats-grid strong{
+  display:block;
+  margin-top:8px;
+  color:#fff;
+  font:900 25px/1 "Barlow Condensed",sans-serif;
+}
+
+.evolution-stats-grid small{
+  display:block;
+  margin-top:5px;
+  color:#77847b;
+  font-size:9px;
+}
+
+.evolution-panel{
+  padding:14px;
+  border:1px solid rgba(143,227,109,.14);
+  border-radius:15px;
+  background:rgba(5,12,8,.86);
+  box-shadow:0 12px 34px rgba(0,0,0,.20);
+}
+
+.evolution-panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:11px;
+}
+
+.evolution-panel-head span,
+.evolution-next-step > span{
+  display:block;
+  color:var(--green);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+
+.evolution-panel-head h3{
+  margin:4px 0 0;
+  color:#fff;
+  font:900 18px/1 "Barlow Condensed",sans-serif;
+}
+
+.evolution-panel-head button{
+  padding:7px 9px;
+  border:1px solid rgba(215,91,91,.18);
+  border-radius:8px;
+  background:rgba(120,30,30,.10);
+  color:#c98b8b;
+  cursor:pointer;
+  font-size:8px;
+  font-weight:900;
+}
+
+.personal-records,
+.history-list{
+  display:grid;
+  gap:7px;
+}
+
+.record-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px;
+  border:1px solid rgba(255,255,255,.04);
+  border-radius:10px;
+  background:rgba(255,255,255,.018);
+}
+
+.record-row > div{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:0;
+}
+
+.record-row > div > span{
+  font-size:20px;
+}
+
+.record-row strong{
+  display:block;
+  color:#dfe6e1;
+  font-size:11px;
+}
+
+.record-row small{
+  display:block;
+  margin-top:2px;
+  color:#758078;
+  font-size:8px;
+}
+
+.record-row b{
+  flex:0 0 auto;
+  color:var(--green);
+  font:900 15px "Barlow Condensed",sans-serif;
+}
+
+.history-item{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px;
+  border:1px solid rgba(143,227,109,.08);
+  border-radius:10px;
+  background:rgba(255,255,255,.018);
+}
+
+.history-item-main{
+  display:flex;
+  gap:9px;
+  min-width:0;
+}
+
+.history-item-main > span{
+  flex:0 0 25px;
+  width:25px;
+  height:25px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(143,227,109,.10);
+  color:var(--green);
+  font-size:11px;
+}
+
+.history-item strong{
+  display:block;
+  color:#e0e7e2;
+  font-size:10px;
+  line-height:1.3;
+}
+
+.history-item small{
+  display:block;
+  margin-top:3px;
+  color:#758078;
+  font-size:8px;
+}
+
+.history-item p{
+  margin:5px 0 0;
+  color:#909b93;
+  font-size:8px;
+  line-height:1.4;
+}
+
+.history-item > b{
+  flex:0 0 auto;
+  color:var(--green);
+  font-size:10px;
+}
+
+.history-empty{
+  padding:24px 12px;
+  text-align:center;
+  border:1px dashed rgba(143,227,109,.12);
+  border-radius:11px;
+}
+
+.history-empty strong{
+  color:#9ba69e;
+  font-size:10px;
+}
+
+.history-empty p{
+  margin:5px 0 0;
+  color:#68736b;
+  font-size:9px;
+}
+
+.evolution-next-step{
+  border-color:rgba(143,227,109,.23);
+  background:linear-gradient(90deg,rgba(143,227,109,.08),rgba(5,12,8,.88));
+}
+
+.evolution-next-step > strong{
+  display:block;
+  margin-top:6px;
+  color:#fff;
+  font:900 21px/1.05 "Barlow Condensed",sans-serif;
+}
+
+.evolution-next-step p{
+  margin:7px 0 0;
+  color:#98a39b;
+  font-size:10px;
+  line-height:1.45;
+}
+
+@media(min-width:760px){
+  .evolution-screen{
+    background:
+      linear-gradient(180deg,rgba(2,5,3,.60),rgba(2,5,3,.84)),
+      url("assets/fundo-missao-taf.png") center top / cover no-repeat,
+      #020402;
+  }
+
+  .evolution-stats-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+}
+
