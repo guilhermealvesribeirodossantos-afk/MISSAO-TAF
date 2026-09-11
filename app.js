@@ -836,6 +836,7 @@ function finishWorkout() {
   document.getElementById("finishModal").classList.remove("hidden");
   renderReadiness();
   renderEvolution();
+  renderApprovalPanel();
 }
 
 function closeFinishModal() {
@@ -1014,6 +1015,7 @@ function clearWorkoutHistory() {
   localStorage.removeItem("missaoTAF.history");
   renderReadiness();
   renderEvolution();
+  renderApprovalPanel();
 }
 
 
@@ -1345,6 +1347,7 @@ function save2400Test() {
   }
 
   renderRunningScreen();
+  renderApprovalPanel();
 }
 
 
@@ -1596,6 +1599,162 @@ function saveFullBarReps() {
   }
 
   renderBarScreen();
+  renderApprovalPanel();
+}
+
+
+function getBestCoreResult() {
+  const profile = getAdaptiveProfile();
+  return profile.bestCore === null ? null : profile.bestCore;
+}
+
+function getBestRun2400Test() {
+  const tests = getRunningTests();
+  if (!tests.length) return null;
+
+  return tests.reduce((best, current) =>
+    Number(current.totalSeconds) < Number(best.totalSeconds) ? current : best
+  );
+}
+
+function setApprovalStatus(element, text, state) {
+  if (!element) return;
+  element.textContent = text;
+  element.classList.remove("neutral", "warning", "success", "danger");
+  element.classList.add(state);
+}
+
+function renderApprovalPanel() {
+  const runTest = getBestRun2400Test();
+  const fullBarReps = getBestFullBarReps();
+  const bestCore = getBestCoreResult();
+
+  const runStatus = document.getElementById("approvalRunStatus");
+  const barStatus = document.getElementById("approvalBarStatus");
+  const coreStatus = document.getElementById("approvalCoreStatus");
+  const overall = document.getElementById("approvalOverall");
+
+  const runCurrent = document.getElementById("approvalRunCurrent");
+  const runGap = document.getElementById("approvalRunGap");
+  const barCurrent = document.getElementById("approvalBarCurrent");
+  const barGap = document.getElementById("approvalBarGap");
+  const coreCurrent = document.getElementById("approvalCoreCurrent");
+  const coreGap = document.getElementById("approvalCoreGap");
+
+  let passedCount = 0;
+
+  // Corrida 2.400 m — referência configurada no projeto: 13:00 ou menos.
+  if (!runTest) {
+    if (runCurrent) runCurrent.textContent = "—";
+    if (runGap) {
+      runGap.textContent =
+        "Registre um teste específico de 2.400 m na Central de Corrida.";
+    }
+    setApprovalStatus(runStatus, "SEM TESTE", "neutral");
+  } else {
+    const total = Number(runTest.totalSeconds);
+    if (runCurrent) runCurrent.textContent = formatSeconds(total);
+
+    if (total <= 13 * 60) {
+      passedCount += 1;
+      setApprovalStatus(runStatus, "ATINGIDO", "success");
+      if (runGap) {
+        const margin = 13 * 60 - total;
+        runGap.textContent =
+          `Referência atingida com ${formatSeconds(margin)} de margem.`;
+      }
+    } else if (total <= 13 * 60 + 60) {
+      setApprovalStatus(runStatus, "PRÓXIMO", "warning");
+      if (runGap) {
+        const gap = total - 13 * 60;
+        runGap.textContent =
+          `Faltam reduzir ${formatSeconds(gap)} para chegar a 13:00.`;
+      }
+    } else {
+      setApprovalStatus(runStatus, "ABAIXO", "danger");
+      if (runGap) {
+        const gap = total - 13 * 60;
+        runGap.textContent =
+          `Faltam reduzir ${formatSeconds(gap)} para chegar a 13:00.`;
+      }
+    }
+  }
+
+  // Barra dinâmica masculina — referência configurada: 2 repetições.
+  if (barCurrent) barCurrent.textContent = String(fullBarReps);
+
+  if (fullBarReps >= 2) {
+    passedCount += 1;
+    setApprovalStatus(barStatus, "ATINGIDO", "success");
+    if (barGap) {
+      barGap.textContent =
+        `Referência atingida. Melhor marca registrada: ${fullBarReps} repetições.`;
+    }
+  } else if (fullBarReps === 1) {
+    setApprovalStatus(barStatus, "PRÓXIMO", "warning");
+    if (barGap) {
+      barGap.textContent =
+        "Falta 1 barra completa para atingir a referência mínima.";
+    }
+  } else {
+    setApprovalStatus(barStatus, "EM PREPARAÇÃO", "danger");
+    if (barGap) {
+      barGap.textContent =
+        "Faltam 2 barras completas para atingir a referência mínima.";
+    }
+  }
+
+  // Remador — usa o melhor resultado salvo nos treinos como referência de evolução.
+  if (bestCore === null) {
+    if (coreCurrent) coreCurrent.textContent = "—";
+    if (coreGap) {
+      coreGap.textContent =
+        "Ainda não há resultado registrado de remador/core.";
+    }
+    setApprovalStatus(coreStatus, "SEM TESTE", "neutral");
+  } else {
+    const reps = Math.round(Number(bestCore));
+    if (coreCurrent) coreCurrent.textContent = String(reps);
+
+    if (reps >= 15) {
+      passedCount += 1;
+      setApprovalStatus(coreStatus, "ATINGIDO", "success");
+      if (coreGap) {
+        coreGap.textContent =
+          `Referência de 15 repetições atingida. Melhor registro: ${reps}.`;
+      }
+    } else if (reps >= 12) {
+      setApprovalStatus(coreStatus, "PRÓXIMO", "warning");
+      if (coreGap) {
+        coreGap.textContent =
+          `Faltam ${15 - reps} repetições para chegar a 15.`;
+      }
+    } else {
+      setApprovalStatus(coreStatus, "ABAIXO", "danger");
+      if (coreGap) {
+        coreGap.textContent =
+          `Faltam ${15 - reps} repetições para chegar a 15.`;
+      }
+    }
+  }
+
+  if (overall) {
+    overall.classList.remove("neutral", "warning", "success", "danger");
+
+    if (passedCount === 3) {
+      overall.textContent = "3/3 REFERÊNCIAS ATINGIDAS";
+      overall.classList.add("success");
+    } else if (passedCount === 2) {
+      overall.textContent = "2/3 REFERÊNCIAS ATINGIDAS";
+      overall.classList.add("warning");
+    } else if (passedCount === 1) {
+      overall.textContent = "1/3 REFERÊNCIAS ATINGIDAS";
+      overall.classList.add("warning");
+    } else {
+      overall.textContent = "EM PREPARAÇÃO";
+      overall.classList.add("danger");
+    }
+  }
 }
 
 function bindEvents() {
@@ -1637,6 +1796,7 @@ function init() {
   renderWeek();
   renderReadiness();
   bindEvents();
+renderApprovalPanel();
 }
 
 document.addEventListener("DOMContentLoaded", init);
