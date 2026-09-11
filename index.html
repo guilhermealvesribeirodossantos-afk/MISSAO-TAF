@@ -209,7 +209,104 @@
         </p>
       </article>
     </section>
-  </main>
+  
+      <!-- =====================================================
+           V1.6 — PAINEL DE APROVAÇÃO PMMG
+           ===================================================== -->
+      <section class="approval-panel" id="approvalPanel">
+        <div class="section-heading">
+          <div>
+            <span>MISSÃO PMMG</span>
+            <h2>SE O TAF FOSSE HOJE?</h2>
+          </div>
+          <b class="approval-overall" id="approvalOverall">EM PREPARAÇÃO</b>
+        </div>
+
+        <div class="approval-grid">
+          <article class="approval-card" data-test="run">
+            <div class="approval-card-head">
+              <div>
+                <span>CORRIDA</span>
+                <strong>2.400 M</strong>
+              </div>
+              <b class="approval-status neutral" id="approvalRunStatus">SEM TESTE</b>
+            </div>
+            <div class="approval-metric">
+              <span>SUA MARCA</span>
+              <strong id="approvalRunCurrent">—</strong>
+            </div>
+            <div class="approval-target">
+              <span>REFERÊNCIA MÍNIMA MASCULINA</span>
+              <b>13:00 ou menos</b>
+            </div>
+            <p id="approvalRunGap">Registre um teste específico de 2.400 m na Central de Corrida.</p>
+          </article>
+
+          <article class="approval-card" data-test="bar">
+            <div class="approval-card-head">
+              <div>
+                <span>BARRA DINÂMICA</span>
+                <strong>MASCULINO</strong>
+              </div>
+              <b class="approval-status danger" id="approvalBarStatus">EM PREPARAÇÃO</b>
+            </div>
+            <div class="approval-metric">
+              <span>SUA MARCA</span>
+              <strong><span id="approvalBarCurrent">0</span> rep</strong>
+            </div>
+            <div class="approval-target">
+              <span>REFERÊNCIA MÍNIMA</span>
+              <b>2 repetições</b>
+            </div>
+            <p id="approvalBarGap">Faltam 2 barras completas para atingir a referência mínima.</p>
+          </article>
+
+          <article class="approval-card" data-test="core">
+            <div class="approval-card-head">
+              <div>
+                <span>ABDOMINAL REMADOR</span>
+                <strong>30 SEGUNDOS</strong>
+              </div>
+              <b class="approval-status neutral" id="approvalCoreStatus">SEM TESTE</b>
+            </div>
+            <div class="approval-metric">
+              <span>SUA MARCA</span>
+              <strong><span id="approvalCoreCurrent">—</span> rep</strong>
+            </div>
+            <div class="approval-target">
+              <span>REFERÊNCIA MÍNIMA</span>
+              <b>15 repetições</b>
+            </div>
+            <p id="approvalCoreGap">Ainda precisamos registrar um teste específico de 30 segundos.</p>
+          </article>
+
+          <article class="approval-card" data-test="pafpm">
+            <div class="approval-card-head">
+              <div>
+                <span>PAFPM</span>
+                <strong>AVALIAÇÃO FÍSICA</strong>
+              </div>
+              <b class="approval-status neutral">PENDENTE</b>
+            </div>
+            <div class="approval-metric">
+              <span>REFERÊNCIA</span>
+              <strong>2:45</strong>
+            </div>
+            <div class="approval-target">
+              <span>STATUS NO SITE</span>
+              <b>Preparação futura</b>
+            </div>
+            <p>Esta prova terá um módulo próprio antes de entrar no cálculo completo de prontidão.</p>
+          </article>
+        </div>
+
+        <div class="approval-note">
+          <strong>IMPORTANTE</strong>
+          <p>Este painel usa as referências configuradas no MISSÃO TAF e seus registros salvos. Ele serve para acompanhar preparação; a conferência final deve sempre seguir o edital vigente do concurso.</p>
+        </div>
+      </section>
+
+</main>
 
   <nav class="bottom-nav" aria-label="Navegação principal">
     <button class="active" data-nav="hoje">
