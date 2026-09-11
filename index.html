@@ -1,1 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b120d" />
+  <title>MISSÃO TAF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-mark">▲</div>
+        <div>
+          <h1>MISSÃO <span>TAF</span></h1>
+          <p>PREPARAÇÃO FÍSICA PMMG</p>
+        </div>
+      </div>
+      <div class="status-pill"><span class="dot"></span> Em evolução</div>
+    </header>
 
+    <main class="content">
+      <section class="hero-card panel">
+        <div>
+          <p class="eyebrow" id="todayLabel">SEXTA-FEIRA, 11 DE SETEMBRO DE 2026</p>
+          <h2>Disciplina hoje. Farda amanhã.</h2>
+          <p class="muted">Plano físico adaptado à sua escala 12x36.</p>
+        </div>
+        <div class="readiness">
+          <span>PRONTIDÃO</span>
+          <strong id="readinessValue">8%</strong>
+        </div>
+      </section>
+
+      <section class="work-card panel" id="workCard">
+        <div class="icon-box danger">💼</div>
+        <div>
+          <small id="dayType">DIA DE TRABALHO</small>
+          <strong id="dayHours">08:00 — 20:00</strong>
+        </div>
+        <div class="right-note" id="dayNote">Saída de casa 07:45</div>
+      </section>
+
+      <section class="panel workout-panel">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">TREINO DE HOJE</span>
+            <h3 id="workoutTitle">Sessão curta de preparação PMMG</h3>
+          </div>
+          <div class="duration"><span>⏱</span><strong id="workoutDuration">35 min</strong></div>
+        </div>
+
+        <div class="workout-list" id="workoutList"></div>
+
+        <button class="primary-btn" id="startWorkoutBtn">▶ INICIAR TREINO</button>
+      </section>
+
+      <section class="grid two-col">
+        <article class="panel">
+          <div class="section-head simple"><h3>MINHAS METAS</h3></div>
+          <div class="goal-list">
+            <div class="goal-row"><div><strong>Barra fixa</strong><small>Atual: 0</small></div><span>Meta: 1ª barra</span></div>
+            <div class="goal-row"><div><strong>Corrida 2.400 m</strong><small>Marco zero pendente</small></div><span>Meta: evoluir ritmo</span></div>
+            <div class="goal-row"><div><strong>Abdominal remador</strong><small>Nunca testado</small></div><span>Meta: técnica primeiro</span></div>
+            <div class="goal-row"><div><strong>Corda</strong><small>Histórico: 2.000 pulos</small></div><span>Complementar</span></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="section-head simple"><h3>MEU PROGRESSO</h3></div>
+          <div class="progress-wrap">
+            <div class="ring"><span id="ringValue">8%</span></div>
+            <div class="stats">
+              <div><small>Fase</small><strong>Base TAF</strong></div>
+              <div><small>Academia</small><strong>Sem academia</strong></div>
+              <div><small>Prioridade</small><strong>Corrida + Barra</strong></div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="section-head simple">
+          <h3>MINHA SEMANA <small>(12x36)</small></h3>
+          <span class="muted">Trabalho / Folga</span>
+        </div>
+        <div class="week-strip" id="weekStrip"></div>
+      </section>
+
+      <section class="panel quote-card">
+        <div class="paper-note">
+          <span>FOCO</span>
+          <strong>Corrida. Barra. Core. Consistência.</strong>
+        </div>
+        <p>O site vai priorizar preparação física para a PMMG e adaptar a carga ao seu dia de trabalho, folga útil ou folga com sua filha.</p>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="active">⌂<span>Hoje</span></button>
+      <button>🏃<span>Corrida</span></button>
+      <button>💪<span>Barra</span></button>
+      <button>📈<span>Evolução</span></button>
+    </nav>
+  </div>
+
+  <div class="modal hidden" id="workoutModal">
+    <div class="modal-card">
+      <button class="close-btn" id="closeModal">×</button>
+      <p class="eyebrow">MISSÃO DO DIA</p>
+      <h2 id="modalTitle">Treino iniciado</h2>
+      <p class="muted">Marque cada bloco quando concluir.</p>
+      <div id="modalExercises" class="modal-exercises"></div>
+      <button class="primary-btn" id="finishWorkout">CONCLUIR TREINO</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
