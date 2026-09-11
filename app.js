@@ -743,29 +743,7 @@ function renderExercise() {
   document.getElementById("exerciseRest").textContent = exercise.rest;
   document.getElementById("exerciseObjective").textContent = exercise.objective;
 
-  const coachAction = document.getElementById("coachAction");
-  const coachDetail = document.getElementById("coachDetail");
-  if (coachAction && coachDetail) {
-    if (exercise.name.toLowerCase().includes("corrida")) {
-      coachAction.textContent = "AGORA: FAÇA A CORRIDA";
-      coachDetail.textContent = `Siga o ritmo indicado por ${exercise.prescription}. Não tente bater recorde hoje; cumpra a sessão e registre a distância ao terminar.`;
-    } else if (exercise.name.toLowerCase().includes("barra")) {
-      coachAction.textContent = "NÍVEL 0: CONSTRUIR A PRIMEIRA BARRA";
-      coachDetail.textContent = "Você ainda está em 0 barras completas. Hoje o objetivo NÃO é acumular barras completas: faça a progressão indicada, uma série por vez, com controle e descanso.";
-    } else if (exercise.name.toLowerCase().includes("remador") || exercise.name.toLowerCase().includes("core")) {
-      coachAction.textContent = "AGORA: PRIORIZE A TÉCNICA";
-      coachDetail.textContent = "Faça as repetições devagar e coordenadas. Nesta fase, uma repetição correta vale mais do que várias rápidas e mal executadas.";
-    } else if (exercise.name.toLowerCase().includes("corda")) {
-      coachAction.textContent = "AGORA: COMPLETE OS BLOCOS";
-      coachDetail.textContent = "Divida o volume em blocos. Descanse quando indicado e mantenha saltos baixos. Se a panturrilha estiver muito sobrecarregada, reduza o volume.";
-    } else if (exercise.name.toLowerCase().includes("flex")) {
-      coachAction.textContent = "AGORA: FAÇA AS SÉRIES";
-      coachDetail.textContent = "Execute com o corpo alinhado e pare antes da técnica desmontar. Use o descanso entre as séries.";
-    } else {
-      coachAction.textContent = "AGORA: CUMPRA ESTA ETAPA";
-      coachDetail.textContent = `Faça ${exercise.prescription} seguindo as instruções abaixo. Depois conclua a etapa para receber a próxima orientação.`;
-    }
-  }
+  renderAdaptiveGuidance(exercise);
 
   const list = document.getElementById("exerciseInstructions");
   list.innerHTML = "";
@@ -1036,6 +1014,168 @@ function clearWorkoutHistory() {
   localStorage.removeItem("missaoTAF.history");
   renderReadiness();
   renderEvolution();
+}
+
+
+function getAdaptiveProfile() {
+  const history = getStoredHistory();
+  const results = getAllRecordedResults(history);
+
+  return {
+    workouts: history.length,
+    bestRun: findBestResult(results, ["corrida"]),
+    bestBar: findBestResult(results, ["barra"]),
+    bestCore: findBestResult(results, ["remador", "core"]),
+    bestRope: findBestResult(results, ["corda"]),
+    bestPush: findBestResult(results, ["flex"])
+  };
+}
+
+function getAdaptiveRunningPlan(profile) {
+  const bestRun = profile.bestRun;
+
+  if (bestRun === null) {
+    return {
+      title: "META DE HOJE",
+      text: "Faça a corrida em ritmo confortável e contínuo. O objetivo é criar uma primeira referência real de distância sem correr no máximo."
+    };
+  }
+
+  if (bestRun < 3.5) {
+    return {
+      title: "META ADAPTATIVA",
+      text: `Seu melhor registro é ${bestRun.toFixed(2)} km. Hoje tente terminar entre ${bestRun.toFixed(2)} e ${(bestRun + 0.20).toFixed(2)} km, sem sprintar no início.`
+    };
+  }
+
+  if (bestRun < 4.5) {
+    return {
+      title: "META ADAPTATIVA",
+      text: `Seu melhor registro é ${bestRun.toFixed(2)} km. Hoje mantenha ritmo controlado e tente acrescentar até 200 m ao total somente se terminar com técnica e respiração sob controle.`
+    };
+  }
+
+  return {
+    title: "META ADAPTATIVA",
+    text: `Seu melhor registro é ${bestRun.toFixed(2)} km. Hoje o foco é consistência: mantenha um ritmo estável e termine forte, sem transformar todo treino em teste máximo.`
+  };
+}
+
+function getAdaptiveBarPlan(profile) {
+  const bestBar = profile.bestBar;
+
+  if (bestBar === null || bestBar < 5) {
+    return {
+      title: "NÍVEL 0 — BASE",
+      text: "Você ainda está construindo força para a primeira barra. Priorize retrações escapulares, sustentação assistida curta e negativas controladas. Não faça repetições completas forçadas."
+    };
+  }
+
+  if (bestBar < 10) {
+    return {
+      title: "NÍVEL 0 — CONTROLE",
+      text: `Seu melhor tempo controlado é ${Math.round(bestBar)} s. Hoje tente igualar esse tempo com técnica limpa e, se estiver estável, aumentar apenas 1–2 segundos.`
+    };
+  }
+
+  if (bestBar < 15) {
+    return {
+      title: "NÍVEL 0 — FORÇA ESPECÍFICA",
+      text: `Seu melhor tempo controlado é ${Math.round(bestBar)} s. Mantenha negativas lentas e isometrias firmes. Ainda não é necessário fazer tentativas repetidas de barra completa.`
+    };
+  }
+
+  return {
+    title: "PRÉ-PRIMEIRA BARRA",
+    text: `Seu melhor tempo controlado é ${Math.round(bestBar)} s. Em uma sessão em que estiver descansado, o treinador pode incluir 1 tentativa técnica de barra completa após o aquecimento, sem balanço e sem insistir se falhar.`
+  };
+}
+
+function getAdaptiveCorePlan(profile) {
+  const bestCore = profile.bestCore;
+
+  if (bestCore === null) {
+    return {
+      title: "REMADOR — APRENDIZADO",
+      text: "Como você ainda está criando sua referência no remador, faça repetições lentas e técnicas. Priorize amplitude correta antes da velocidade."
+    };
+  }
+
+  if (bestCore < 10) {
+    return {
+      title: "REMADOR — TÉCNICA",
+      text: `Sua melhor série registrada é ${Math.round(bestCore)} repetições. Hoje tente repetir esse número com execução limpa antes de buscar aumentar.`
+    };
+  }
+
+  if (bestCore < 15) {
+    return {
+      title: "REMADOR — PROGRESSÃO",
+      text: `Sua melhor série é ${Math.round(bestCore)} repetições. Se a técnica permanecer boa, tente acrescentar 1 repetição em apenas uma das séries.`
+    };
+  }
+
+  return {
+    title: "REMADOR — CONSOLIDAÇÃO",
+    text: `Sua melhor série é ${Math.round(bestCore)} repetições. Agora o foco é repetir esse desempenho com consistência e começar a trabalhar velocidade sem perder a forma.`
+  };
+}
+
+function getAdaptiveRopePlan(profile) {
+  const bestRope = profile.bestRope;
+
+  if (bestRope === null) {
+    return {
+      title: "CORDA — BASE",
+      text: "Faça os blocos sem buscar velocidade máxima. Registre o total ao terminar para o treinador criar sua referência."
+    };
+  }
+
+  return {
+    title: "CORDA — VOLUME CONTROLADO",
+    text: `Seu maior volume registrado é ${Math.round(bestRope)} pulos. Hoje mantenha o volume planejado e priorize ritmo contínuo e aterrissagem leve.`
+  };
+}
+
+function getAdaptivePushPlan(profile) {
+  const bestPush = profile.bestPush;
+
+  if (bestPush === null) {
+    return {
+      title: "FLEXÃO — REFERÊNCIA",
+      text: "Faça as séries submáximas e pare antes da falha. Registre sua melhor série para orientar os próximos treinos."
+    };
+  }
+
+  return {
+    title: "FLEXÃO — PROGRESSÃO",
+    text: `Sua melhor série registrada é ${Math.round(bestPush)} repetições. Hoje tente manter esse nível em mais séries antes de aumentar o máximo.`
+  };
+}
+
+function getAdaptiveGuidance(exercise) {
+  const profile = getAdaptiveProfile();
+  const name = String(exercise.name || "").toLowerCase();
+
+  if (name.includes("corrida")) return getAdaptiveRunningPlan(profile);
+  if (name.includes("barra")) return getAdaptiveBarPlan(profile);
+  if (name.includes("remador") || name.includes("core")) return getAdaptiveCorePlan(profile);
+  if (name.includes("corda")) return getAdaptiveRopePlan(profile);
+  if (name.includes("flex")) return getAdaptivePushPlan(profile);
+
+  return {
+    title: "ORIENTAÇÃO DO TREINADOR",
+    text: `Faça ${exercise.prescription} com controle e respeite a execução indicada.`
+  };
+}
+
+function renderAdaptiveGuidance(exercise) {
+  const guidance = getAdaptiveGuidance(exercise);
+  const coachAction = document.getElementById("coachAction");
+  const coachDetail = document.getElementById("coachDetail");
+
+  if (coachAction) coachAction.textContent = guidance.title;
+  if (coachDetail) coachDetail.textContent = guidance.text;
 }
 
 function bindEvents() {
