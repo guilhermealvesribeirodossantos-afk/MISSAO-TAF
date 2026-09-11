@@ -197,31 +197,16 @@
         </div>
       </article>
 
-      <article class="panel mission-current-card">
-        <div class="mission-current-top">
-          <div>
-            <span class="mission-current-kicker">MISSÃO ATUAL</span>
-            <strong>PREPARAÇÃO TAF PMMG</strong>
-          </div>
-          <span class="mission-current-status">FOCO TAF</span>
-        </div>
-
-        <div class="mission-current-focus">
-          <span>CORRIDA</span>
-          <i></i>
-          <span>BARRA</span>
-          <i></i>
-          <span>CORE</span>
+      <article class="panel quote-card">
+        <div class="paper-note">
+          <span>FOCO</span>
+          <strong>Corrida. Barra. Core. Consistência.</strong>
         </div>
 
         <p>
-          Disciplina, constância e evolução. O plano se adapta à sua escala 12x36 e ao treino previsto para o dia.
+          O site vai priorizar preparação física para a PMMG e adaptar a carga ao seu dia de trabalho,
+          folga útil ou folga com sua filha.
         </p>
-
-        <div class="mission-current-footer">
-          <span>OBJETIVO</span>
-          <strong>EVOLUIR ATÉ AS MARCAS DO TAF</strong>
-        </div>
       </article>
     </section>
   </main>
@@ -403,6 +388,158 @@
   </section>
 
 
+
+
+  <!-- =====================================================
+       V1.5 — CENTRAL DA BARRA
+       ===================================================== -->
+  <section class="bar-screen hidden" id="barScreen" aria-hidden="true">
+    <div class="running-shell">
+      <header class="evolution-topbar">
+        <button class="evolution-back" id="barBackBtn" aria-label="Voltar">←</button>
+        <div>
+          <span>MISSÃO TAF</span>
+          <h2>CENTRAL DA BARRA</h2>
+        </div>
+        <div class="evolution-badge">NÍVEL 0</div>
+      </header>
+
+      <div class="evolution-content">
+        <article class="evolution-hero bar-hero">
+          <div>
+            <span>MISSÃO ATUAL</span>
+            <strong id="barLevelTitle">PRIMEIRA BARRA</strong>
+            <p id="barLevelText">
+              Seu ponto de partida é 0 barras completas. A missão agora é construir força e controle até liberar a primeira tentativa técnica.
+            </p>
+          </div>
+          <div class="evolution-ring bar-level-ring">
+            <span id="barLevelNumber">0</span>
+          </div>
+        </article>
+
+        <div class="evolution-stats-grid">
+          <article>
+            <span>BARRAS COMPLETAS</span>
+            <strong id="barFullReps">0</strong>
+            <small>melhor marca</small>
+          </article>
+          <article>
+            <span>TEMPO CONTROLADO</span>
+            <strong id="barBestTime">0 s</strong>
+            <small>melhor progressão</small>
+          </article>
+          <article>
+            <span>SESSÕES</span>
+            <strong id="barSessionCount">0</strong>
+            <small>com barra registrada</small>
+          </article>
+          <article>
+            <span>FASE</span>
+            <strong id="barPhase">BASE</strong>
+            <small>progressão atual</small>
+          </article>
+        </div>
+
+        <article class="evolution-panel">
+          <div class="evolution-panel-head">
+            <div>
+              <span>ROTA PARA A PRIMEIRA REPETIÇÃO</span>
+              <h3>PROGRESSÃO</h3>
+            </div>
+          </div>
+
+          <div class="bar-roadmap">
+            <div class="bar-roadmap-step active" id="barStep0">
+              <b>0</b>
+              <div>
+                <strong>BASE E ESCÁPULAS</strong>
+                <small>Retrações escapulares e adaptação à barra.</small>
+              </div>
+            </div>
+
+            <div class="bar-roadmap-step" id="barStep1">
+              <b>1</b>
+              <div>
+                <strong>ISOMETRIA</strong>
+                <small>Sustentação assistida com postura controlada.</small>
+              </div>
+            </div>
+
+            <div class="bar-roadmap-step" id="barStep2">
+              <b>2</b>
+              <div>
+                <strong>NEGATIVAS</strong>
+                <small>Descidas lentas e seguras para ganhar força específica.</small>
+              </div>
+            </div>
+
+            <div class="bar-roadmap-step" id="barStep3">
+              <b>3</b>
+              <div>
+                <strong>PRIMEIRA TENTATIVA</strong>
+                <small>Uma tentativa técnica somente quando o treinador liberar.</small>
+              </div>
+            </div>
+
+            <div class="bar-roadmap-step" id="barStep4">
+              <b>4</b>
+              <div>
+                <strong>2+ REPETIÇÕES</strong>
+                <small>Depois da primeira barra, construir consistência para o TAF.</small>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="evolution-panel evolution-next-step">
+          <span>ORDEM DO TREINADOR</span>
+          <strong id="barCoachTitle">Construir a base</strong>
+          <p id="barCoachText">
+            Ainda não tente acumular barras completas. Cumpra as progressões do treino do dia e registre seu melhor tempo controlado.
+          </p>
+        </article>
+
+        <article class="evolution-panel">
+          <div class="evolution-panel-head">
+            <div>
+              <span>REGISTRO</span>
+              <h3>CONSEGUIU SUA PRIMEIRA BARRA?</h3>
+            </div>
+          </div>
+
+          <p class="running-help">
+            Só registre uma repetição completa se ela tiver sido executada com controle, sem balanço ou impulso.
+          </p>
+
+          <label class="bar-reps-input">
+            <span>MELHOR NÚMERO DE BARRAS COMPLETAS</span>
+            <input id="barFullRepsInput" type="number" min="0" max="50" inputmode="numeric" placeholder="0">
+          </label>
+
+          <button class="primary-btn running-save-btn" type="button" id="saveBarRepsBtn">
+            SALVAR MARCA DE BARRA
+          </button>
+          <small class="running-save-status" id="barSaveStatus"></small>
+        </article>
+
+        <article class="evolution-panel">
+          <div class="evolution-panel-head">
+            <div>
+              <span>HISTÓRICO</span>
+              <h3>EVOLUÇÃO DA BARRA</h3>
+            </div>
+          </div>
+          <div class="history-list" id="barHistory">
+            <div class="history-empty">
+              <strong>NENHUM REGISTRO AINDA</strong>
+              <p>As sessões e marcas da barra aparecerão aqui.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
 
   <!-- =====================================================
        V1.4 — CENTRAL DE CORRIDA PMMG
