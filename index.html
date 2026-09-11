@@ -309,6 +309,38 @@
                 Terminar a corrida sentindo que ainda conseguiria continuar por alguns minutos.
               </p>
             </div>
+
+            <div class="live-timer-box hidden" id="liveTimerBox">
+              <div class="timer-head">
+                <span id="timerModeLabel">CRONÔMETRO</span>
+                <strong id="liveTimerDisplay">00:00</strong>
+              </div>
+
+              <div class="timer-actions">
+                <button type="button" id="timerStartPauseBtn">INICIAR</button>
+                <button type="button" id="timerResetBtn">ZERAR</button>
+                <button type="button" id="startRestBtn" class="hidden">DESCANSO</button>
+              </div>
+            </div>
+
+            <div class="exercise-result-box hidden" id="exerciseResultBox">
+              <label for="exerciseResultInput" id="exerciseResultLabel">
+                Resultado
+              </label>
+
+              <input
+                id="exerciseResultInput"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                autocomplete="off"
+                placeholder=""
+              />
+
+              <small>
+                Registre seu resultado antes de concluir o exercício.
+              </small>
+            </div>
           </div>
         </article>
 
