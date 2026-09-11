@@ -1079,3 +1079,357 @@ h1 span{color:var(--green)}
   .hero-card{min-height:150px}
   .panel{border-radius:17px}
 }
+
+/* =========================================================
+   V0.7 — TELA DE SESSÃO DE TREINO
+   ========================================================= */
+
+.hidden{
+  display:none !important;
+}
+
+.training-screen{
+  position:fixed;
+  inset:0;
+  z-index:60;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  background:
+    linear-gradient(180deg,rgba(2,5,3,.58),rgba(2,5,3,.82)),
+    url("assets/fundo-missao-taf.png") 72% top / auto 100% no-repeat,
+    #020402;
+  color:var(--text);
+}
+
+.training-shell{
+  width:min(760px,100%);
+  min-height:100%;
+  margin:0 auto;
+  padding:
+    calc(12px + env(safe-area-inset-top))
+    12px
+    calc(24px + env(safe-area-inset-bottom));
+}
+
+.training-topbar{
+  position:sticky;
+  top:0;
+  z-index:3;
+  display:grid;
+  grid-template-columns:44px 1fr auto;
+  align-items:center;
+  gap:10px;
+  margin:-12px -12px 10px;
+  padding:
+    calc(10px + env(safe-area-inset-top))
+    12px
+    10px;
+  background:rgba(3,8,5,.92);
+  border-bottom:1px solid rgba(143,227,109,.16);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+.training-back{
+  width:42px;
+  height:42px;
+  border:1px solid rgba(143,227,109,.20);
+  border-radius:12px;
+  color:#fff;
+  background:rgba(143,227,109,.07);
+  font-size:23px;
+  cursor:pointer;
+}
+
+.training-kicker{
+  display:block;
+  color:var(--green);
+  font:800 9px/1 Inter,sans-serif;
+  letter-spacing:.12em;
+}
+
+.training-topbar h2{
+  margin:4px 0 0;
+  font:900 22px/1 "Barlow Condensed",sans-serif;
+  letter-spacing:.035em;
+}
+
+.training-progress-mini{
+  min-width:48px;
+  padding:7px 8px;
+  text-align:center;
+  border:1px solid rgba(143,227,109,.18);
+  border-radius:10px;
+  background:rgba(0,0,0,.22);
+  color:var(--green);
+  font-weight:800;
+  font-size:11px;
+}
+
+.training-summary-card{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  margin-bottom:10px;
+  padding:13px;
+  border:1px solid rgba(143,227,109,.18);
+  border-radius:14px;
+  background:rgba(7,15,10,.76);
+  backdrop-filter:blur(8px);
+}
+
+.training-summary-card small{
+  display:block;
+  color:var(--green);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+
+.training-summary-card strong{
+  display:block;
+  margin-top:4px;
+  font:800 17px/1.1 "Barlow Condensed",sans-serif;
+}
+
+.training-summary-card > div:last-child{
+  flex:0 0 auto;
+  text-align:right;
+  color:#dfe6e0;
+}
+
+.training-main{
+  padding-bottom:8px;
+}
+
+.training-progress-bar{
+  height:7px;
+  margin:12px 2px 14px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#172019;
+  border:1px solid rgba(255,255,255,.025);
+}
+
+.training-progress-fill{
+  width:25%;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#9fe878,#6cc94e);
+  box-shadow:0 0 16px rgba(143,227,109,.20);
+  transition:width .25s ease;
+}
+
+.exercise-card{
+  border:1px solid rgba(143,227,109,.19);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(8,17,11,.88),rgba(4,10,6,.92));
+  box-shadow:0 18px 50px rgba(0,0,0,.32);
+  overflow:hidden;
+}
+
+.exercise-icon-large{
+  display:grid;
+  place-items:center;
+  min-height:118px;
+  font-size:58px;
+  background:
+    radial-gradient(circle at center,rgba(143,227,109,.10),transparent 44%),
+    rgba(143,227,109,.025);
+  border-bottom:1px solid rgba(143,227,109,.12);
+}
+
+.exercise-content{
+  padding:16px;
+}
+
+.exercise-step-label{
+  color:var(--green);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+
+.exercise-content h2{
+  margin:5px 0 7px;
+  color:#fff;
+  font:900 28px/1 "Barlow Condensed",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.02em;
+}
+
+.exercise-purpose{
+  margin:0;
+  color:#aeb8b0;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.exercise-prescription{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:14px 0;
+}
+
+.exercise-prescription > div{
+  padding:11px;
+  border:1px solid rgba(143,227,109,.15);
+  border-radius:11px;
+  background:rgba(143,227,109,.035);
+}
+
+.exercise-prescription small{
+  display:block;
+  color:#8f9b92;
+  font-size:8px;
+  letter-spacing:.10em;
+}
+
+.exercise-prescription strong{
+  display:block;
+  margin-top:4px;
+  color:#fff;
+  font-size:13px;
+}
+
+.exercise-instructions{
+  margin-top:14px;
+  padding:13px;
+  border-radius:12px;
+  background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.04);
+}
+
+.exercise-instructions h3{
+  margin:0 0 8px;
+  color:var(--green);
+  font-size:15px;
+}
+
+.exercise-instructions ul{
+  margin:0;
+  padding-left:18px;
+}
+
+.exercise-instructions li{
+  margin:0 0 7px;
+  color:#c7d0c9;
+  font-size:11px;
+  line-height:1.45;
+}
+
+.exercise-instructions li:last-child{
+  margin-bottom:0;
+}
+
+.exercise-note{
+  margin-top:12px;
+  padding:12px;
+  border-left:3px solid var(--green);
+  border-radius:0 10px 10px 0;
+  background:rgba(143,227,109,.045);
+}
+
+.exercise-note strong{
+  color:var(--green);
+  font-size:9px;
+  letter-spacing:.1em;
+}
+
+.exercise-note p{
+  margin:5px 0 0;
+  color:#d0d7d1;
+  font-size:11px;
+  line-height:1.45;
+}
+
+.training-actions{
+  position:sticky;
+  bottom:0;
+  z-index:2;
+  display:grid;
+  grid-template-columns:.72fr 1.28fr;
+  gap:8px;
+  margin-top:12px;
+  padding:
+    10px
+    0
+    calc(8px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,transparent,rgba(2,5,3,.94) 35%);
+}
+
+.secondary-training-btn,
+.primary-training-btn{
+  min-height:52px;
+  border-radius:12px;
+  cursor:pointer;
+  font:900 15px "Barlow Condensed",sans-serif;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.secondary-training-btn{
+  color:#d7ded8;
+  border:1px solid rgba(143,227,109,.18);
+  background:rgba(8,15,10,.90);
+}
+
+.primary-training-btn{
+  color:#071006;
+  border:0;
+  background:linear-gradient(90deg,#9fe878,#77cf55);
+  box-shadow:0 8px 22px rgba(100,190,72,.13);
+}
+
+.finish-summary{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:16px 0;
+}
+
+.finish-summary > div{
+  padding:12px;
+  border:1px solid rgba(143,227,109,.14);
+  border-radius:10px;
+  background:rgba(143,227,109,.035);
+}
+
+.finish-summary small{
+  display:block;
+  color:#8f9a92;
+  font-size:9px;
+}
+
+.finish-summary strong{
+  display:block;
+  margin-top:4px;
+  color:#fff;
+  font-size:13px;
+}
+
+@media(min-width:760px){
+  .training-screen{
+    background:
+      linear-gradient(180deg,rgba(2,5,3,.58),rgba(2,5,3,.78)),
+      url("assets/fundo-missao-taf.png") center top / cover no-repeat,
+      #020402;
+  }
+
+  .training-shell{
+    padding-top:22px;
+  }
+
+  .training-topbar{
+    margin:-22px -12px 14px;
+    padding-top:22px;
+  }
+
+  .exercise-icon-large{
+    min-height:150px;
+    font-size:70px;
+  }
+}
+
