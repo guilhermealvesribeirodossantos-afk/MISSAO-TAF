@@ -2089,3 +2089,117 @@ h1 span{color:var(--green)}
   }
 }
 
+/* =========================================================
+   V1.4 — CENTRAL DE CORRIDA PMMG
+   ========================================================= */
+
+.running-screen{
+  position:fixed;
+  inset:0;
+  z-index:72;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  background:
+    linear-gradient(180deg,rgba(2,5,3,.60),rgba(2,5,3,.90)),
+    url("assets/fundo-missao-taf.png") 68% top / auto 100% no-repeat,
+    #020402;
+  color:var(--text);
+}
+
+.running-shell{
+  width:min(760px,100%);
+  min-height:100%;
+  margin:0 auto;
+  padding:
+    calc(12px + env(safe-area-inset-top))
+    12px
+    calc(100px + env(safe-area-inset-bottom));
+}
+
+.running-help{
+  margin:0 0 14px;
+  color:#97a39b;
+  font-size:10px;
+  line-height:1.5;
+}
+
+.running-time-inputs{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:end;
+  gap:10px;
+}
+
+.running-time-inputs label{
+  display:grid;
+  gap:6px;
+}
+
+.running-time-inputs label span{
+  color:#758178;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.11em;
+}
+
+.running-time-inputs input{
+  width:100%;
+  min-height:54px;
+  border:1px solid rgba(143,227,109,.16);
+  border-radius:12px;
+  outline:none;
+  background:rgba(255,255,255,.025);
+  color:#fff;
+  padding:0 14px;
+  text-align:center;
+  font:900 27px "Barlow Condensed",sans-serif;
+}
+
+.running-time-inputs input:focus{
+  border-color:rgba(143,227,109,.55);
+  box-shadow:0 0 0 3px rgba(143,227,109,.07);
+}
+
+.running-time-inputs > strong{
+  padding-bottom:12px;
+  color:var(--green);
+  font:900 25px "Barlow Condensed",sans-serif;
+}
+
+.running-save-btn{
+  width:100%;
+  margin-top:13px;
+}
+
+.running-save-status{
+  display:block;
+  min-height:16px;
+  margin-top:8px;
+  color:var(--green);
+  font-size:9px;
+  line-height:1.4;
+}
+
+.running-screen .evolution-hero{
+  background:
+    linear-gradient(135deg,rgba(9,24,13,.93),rgba(4,10,6,.92));
+}
+
+.running-screen .evolution-ring{
+  background:
+    conic-gradient(var(--green) 0 248deg,#1a241c 248deg 360deg);
+}
+
+.running-screen .evolution-ring::after{
+  background:#071009;
+}
+
+@media(min-width:760px){
+  .running-screen{
+    background:
+      linear-gradient(180deg,rgba(2,5,3,.58),rgba(2,5,3,.85)),
+      url("assets/fundo-missao-taf.png") center top / cover no-repeat,
+      #020402;
+  }
+}
+
