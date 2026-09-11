@@ -2437,3 +2437,39 @@ h1 span{color:var(--green)}
   }
 }
 
+/* =========================================================
+   V1.5.2 — CORREÇÃO DEFINITIVA DO CARD FOCO
+   Mantém o card em uma coluna em qualquer largura.
+   ========================================================= */
+
+/* Sobrescreve a grade desktop antiga do card */
+.quote-card{
+  grid-template-columns:minmax(0,1fr) !important;
+  align-items:stretch !important;
+  width:100%;
+  max-width:100%;
+  overflow:hidden;
+}
+
+.quote-card .paper-note,
+.quote-card > p{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+
+.quote-card > p{
+  white-space:normal;
+  overflow:visible;
+  text-overflow:clip;
+  overflow-wrap:anywhere;
+}
+
+/* Garante que nenhuma regra desktop volte a colocar os dois blocos lado a lado */
+@media(min-width:760px){
+  .quote-card{
+    grid-template-columns:minmax(0,1fr) !important;
+  }
+}
+
